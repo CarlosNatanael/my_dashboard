@@ -20,6 +20,9 @@
             <a href="https://retroachievements.org" target="_blank" class="btn">
                 <i class="fas fa-external-link-alt"></i> Visit RA
             </a>
+            <a href="https://retroachievements.org/user/Cnat" class="btn btn-warning">
+                <i class="fas fa-trophy"></i> RA Profile
+            </a>
         </div>
     </div>
 </div>
@@ -78,52 +81,6 @@
     </p>
     {% endif %}
 </div>
-
-<!-- Projetos Publicados -->
-{% if finished %}
-<div class="block">
-    <div class="block-title">
-        <i class="fas fa-trophy"></i> Published Works
-    </div>
-    
-    <div class="published-games">
-        {% for claim in finished %}
-        <a href="https://retroachievements.org/game/{{ claim.ra_id }}" target="_blank" class="published-game">
-            <div class="published-game-inner">
-                {% if claim.image_icon %}
-                <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                     alt="{{ claim.title }}" class="published-game-icon">
-                {% endif %}
-                <div class="published-game-info">
-                    <strong>{{ claim.title }}</strong>
-                    <small>{{ claim.console }}</small>
-                </div>
-                <span class="status-badge badge-published">PUBLISHED</span>
-            </div>
-        </a>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
-<!-- Wishlist -->
-{% if future %}
-<div class="block">
-    <div class="block-title">
-        <i class="fas fa-bookmark"></i> Future Projects (Wishlist)
-    </div>
-    
-    <div class="wishlist">
-        {% for claim in future %}
-        <div class="wishlist-item">
-            <span class="status-badge badge-wishlist">WISHLIST</span>
-            <strong>{{ claim.title }}</strong>
-            <small>({{ claim.console }})</small>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
 
 <!-- Guestbook (fake) -->
 <div class="block">

@@ -59,6 +59,14 @@
                     <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">
                         <i class="fas fa-home"></i> Home Portal
                     </a></li>
+
+                    <li><a href="{{ url_for('future') }}" class="{% if request.endpoint == 'future' %}active{% endif %}">
+                        <i class="fas fa-hourglass-half"></i> Wishlist
+                    </a></li>
+                
+                    <li><a href="{{ url_for('published') }}" class="{% if request.endpoint == 'published' %}active{% endif %}">
+                        <i class="fas fa-trophy"></i> Published
+                    </a></li>
                     
                     {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
@@ -95,20 +103,6 @@
                     {% else %}
                     <p>Loading stats...</p>
                     {% endif %}
-                </div>
-            </div>
-
-            <div class="block">
-                <div class="block-title">
-                    <i class="fas fa-info-circle"></i> About Me
-                </div>
-                <div class="about-content">
-                    <p>Hello! I'm a RetroAchievements developer creating achievements for classic games.</p>
-                    <div class="btn-group">
-                        <a href="https://retroachievements.org/user/Cnat" class="btn btn-warning">
-                            <i class="fas fa-trophy"></i> RA Profile
-                        </a>
-                    </div>
                 </div>
             </div>
         </aside>

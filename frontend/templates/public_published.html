@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Hall of Fame - RA Dev Station{% endblock %}
+{% block header_title %}Published Works{% endblock %}
+{% block header_subtitle %}Completed Sets{% endblock %}
+
+{% block content %}
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-trophy"></i> Mastered Sets
+    </div>
+    
+    {% if finished %}
+    <div class="published-list">
+        {% for claim in finished %}
+        <div class="published-row">
+            <div class="published-cover">
+                {% if claim.image_icon %}
+                <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" alt="Cover">
+                {% endif %}
+            </div>
+            
+            <div class="published-info">
+                <h3>
+                    <a href="https://retroachievements.org/game/{{ claim.ra_id }}" target="_blank" style="color: var(--accent-teal); text-decoration: none;">
+                        {{ claim.title }} <i class="fas fa-external-link-alt" style="font-size: 12px;"></i>
+                    </a>
+                </h3>
+                <div class="console-tag">{{ claim.console }}</div>
+                
+                <div class="meta-dates">
+                    <div>
+                        <i class="fas fa-flag"></i> Claimed: 
+                        <span style="color: var(--text-muted);">{{ claim.created_at.strftime('%Y-%m-%d') }}</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-check-circle"></i> Published: 
+                        <span style="color: var(--accent-gold);">{{ claim.updated_at.strftime('%Y-%m-%d') }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="published-stats">
+                <div class="stat-badge">
+                   <i class="fas fa-medal"></i> {{ claim.notes if claim.notes else 'Set Complete' }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align: center;">No published sets yet. Keep coding!</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .published-list { display: flex; flex-direction: column; gap: 20px; }
+    .published-row { 
+        display: flex; 
+        background: rgba(0,0,0,0.3); 
+        border: 2px solid var(--border-color);
+        padding: 15px;
+        align-items: center;
+        gap: 20px;
+        transition: transform 0.2s;
+    }
+    .published-row:hover { border-color: var(--accent-gold); transform: translateX(5px); }
+    
+    .published-cover img { width: 80px; height: 80px; object-fit: cover; border: 2px solid white; }
+    
+    .published-info { flex: 1; }
+    .published-info h3 { margin: 0 0 5px 0; font-family: var(--font-heading); }
+    .console-tag { font-size: 11px; background: var(--bg-secondary); display: inline-block; padding: 2px 6px; margin-bottom: 8px; }
+    
+    .meta-dates { display: flex; gap: 15px; font-size: 11px; font-family: var(--font-retro); }
+    
+    .published-stats { text-align: right; }
+    .stat-badge { background: var(--accent-gold); color: black; padding: 5px 10px; font-weight: bold; font-family: var(--font-retro); font-size: 10px; }
+    
+    @media (max-width: 600px) {
+        .published-row { flex-direction: column; text-align: center; }
+        .meta-dates { justify-content: center; }
+        .published-stats { width: 100%; }
+    }
+</style>
+{% endblock %}

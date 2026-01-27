@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Future Plans - RA Dev Station{% endblock %}
+{% block header_title %}Future Projects{% endblock %}
+{% block header_subtitle %}The Wishlist{% endblock %}
+
+{% block content %}
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-bookmark"></i> Planned Sets
+    </div>
+    
+    {% if future %}
+    <div class="wishlist-grid">
+        {% for claim in future %}
+        <div class="wishlist-item-card">
+            <div class="d-flex align-items-center gap-3">
+                {% if claim.image_icon %}
+                    <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                         style="width: 50px; height: 50px; border: 1px solid var(--accent-gold); object-fit: cover;">
+                {% endif %}
+                <div>
+                    <h5 style="margin: 0; color: var(--accent-gold);">{{ claim.title }}</h5>
+                    <small style="color: var(--text-muted);">{{ claim.console }}</small>
+                </div>
+            </div>
+            <div class="mt-2">
+                <span class="status-badge badge-dark">WAITING</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align: center;">No future plans yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wishlist-grid { display: grid; gap: 15px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+    .wishlist-item-card { 
+        background: rgba(255,255,255,0.05); 
+        padding: 15px; 
+        border: 1px dashed var(--border-color); 
+    }
+</style>
+{% endblock %}

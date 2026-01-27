@@ -50,13 +50,25 @@ def get_ra_game_info(game_id):
     except: pass
     return None
 
+# --- ROTAS PÚBLICAS ---
+
 @app.route('/')
 def index():
+    all_claims = Claim.query.order_by(Claim.updated_at.desc()).all()
+    active = [c for c in all_claims if c.status not in ['published', 'wishlist', 'jr_plan_wait', 'jr_queue']]
+    return render_template('public.html', active=active)
+
+@app.route('/future')
+def future():
     all_claims = Claim.query.order_by(Claim.title).all()
-    active = [c for c in all_claims if c.status not in ['published', 'wishlist']]
+    future_projects = [c for c in all_claims if c.status in ['wishlist', 'jr_plan_review', 'jr_plan_wait']]
+    return render_template('public_future.html', future=future_projects)
+
+@app.route('/published')
+def published():
+    all_claims = Claim.query.order_by(Claim.updated_at.desc()).all() # Ordena por data de conclusão
     finished = [c for c in all_claims if c.status == 'published']
-    future = [c for c in all_claims if c.status == 'wishlist']
-    return render_template('public.html', active=active, finished=finished, future=future)
+    return render_template('public_published.html', finished=finished)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
