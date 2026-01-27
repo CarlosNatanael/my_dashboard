@@ -2,8 +2,13 @@ from flask import Flask, render_template
 from config import API_USER, API_KEY
 from models import db, Claim
 import requests
+import os
 
-app = Flask(__name__)
+
+template_dir = os.path.abspath('../frontend/templates')
+static_dir = os.path.abspath('../frontend/static')
+
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ra_dashboard.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
