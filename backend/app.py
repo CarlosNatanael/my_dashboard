@@ -115,5 +115,13 @@ def edit_claim(id):
 
     return render_template('edit.html', claim=claim)
 
+@app.route('/portfolio')
+def portfolio():
+    all_claims = Claim.query.order_by(Claim.title).all()
+    active_projects = [c for c in all_claims if c.status != 'published']
+    finished_projects = [c for c in all_claims if c.status == 'published']
+    
+    return render_template('public.html', active=active_projects, finished=finished_projects)
+
 if __name__ == "__main__":
     app.run(debug=True)

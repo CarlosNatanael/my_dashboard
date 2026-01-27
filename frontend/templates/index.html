@@ -35,12 +35,9 @@
                         {{ claim.status_label }}
                     </span>
 
-                    <div class="progress mt-2" style="height: 5px;">
+                    <div class="progress mt-2 mb-3" style="height: 5px;">
                         <div class="progress-bar" role="progressbar" 
                              style="width: {{ claim.progress }}%;"></div>
-                    </div>
-                    <div class="progress mt-2 mb-3" style="height: 5px;">
-                        <div class="progress-bar" role="progressbar" style="width: {{ claim.progress }}%;"></div>
                     </div>
 
                     <a href="{{ url_for('edit_claim', id=claim.id) }}" class="btn btn-sm btn-outline-light w-100 stretched-link">

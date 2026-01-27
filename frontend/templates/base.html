@@ -23,8 +23,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Meus Jogos</a>
+                        <a class="nav-link" href="{{ url_for('index') }}">🔧 Admin Dashboard</a>
                     </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{{ url_for('portfolio') }}">🌎 Ver Site Público</a>
+                    </li>
+                
                     <li class="nav-item ms-3">
                         <a class="btn btn-outline-warning btn-sm mt-1" href="{{ url_for('add_claim') }}">
                             + Novo Jogo
