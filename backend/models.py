@@ -19,6 +19,9 @@ class Claim(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     STATUS_MAP = {
+        # Fase 0: Planejamento Futuro
+        'wishlist': ('Lista de Desejos (Futuro)', 'dark'),
+
         # Fase 1: Início
         'claim': ('Claim Ativa', 'secondary'),
         'ram': ('Cavando/Inspecionando RAM', 'info'),

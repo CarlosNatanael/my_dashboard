@@ -1,92 +1,119 @@
 {% extends "base.html" %}
 
-{% block title %}Portfólio do Desenvolvedor{% endblock %}
+{% block title %}Portfólio{% endblock %}
 
 {% block content %}
-<div class="p-5 mb-4 bg-dark rounded-3 border border-secondary shadow">
-    <div class="container-fluid py-2 text-center">
-        <h1 class="display-5 fw-bold text-warning">Meus Sets no RetroAchievements</h1>
-        <p class="col-md-8 fs-4 mx-auto text-muted">Acompanhe o progresso dos meus desenvolvimentos de conquistas, desde a pesquisa de memória até o lançamento.</p>
-    </div>
-</div>
 
-{% if active %}
-<h3 class="border-bottom border-secondary pb-2 mb-4 text-info">🚧 Em Desenvolvimento</h3>
-<div class="row mb-5">
-    {% for claim in active %}
-    <div class="col-md-4 mb-4">
-        <div class="card bg-dark border-secondary text-light h-100 shadow-sm hover-effect">
-            <div class="row g-0">
-                <div class="col-4 d-flex align-items-center justify-content-center p-2 bg-secondary bg-opacity-10">
-                    {% if claim.image_icon %}
-                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                             class="img-fluid rounded shadow" alt="Capa">
-                    {% else %}
-                        <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" class="img-fluid opacity-50">
-                    {% endif %}
-                </div>
-                <div class="col-8">
-                    <div class="card-body py-2">
-                        <h5 class="card-title text-truncate mb-1">{{ claim.title }}</h5>
-                        
-                        <div class="d-flex align-items-center mb-2">
-                            {% if claim.console_icon %}
-                                <img src="{{ claim.console_icon }}" alt="{{ claim.console }}" 
-                                     style="width: 24px; height: 24px; object-fit: contain; margin-right: 8px;">
-                            {% endif %}
-                            <span class="badge bg-secondary">{{ claim.console }}</span>
-                        </div>
-
-                        <div class="mb-2">
-                            <span class="badge bg-{{ claim.status_color }} text-dark border border-{{ claim.status_color }}">
-                                {{ claim.status_label }}
-                            </span>
-                        </div>
-
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ claim.progress }}%;"></div>
-                        </div>
-                        <small class="text-muted" style="font-size: 0.75rem">{{ claim.progress }}% Concluído</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-{% if finished %}
-<h3 class="border-bottom border-secondary pb-2 mb-4 text-success">🏆 Publicados / Finalizados</h3>
-<div class="row">
-    {% for claim in finished %}
-    <div class="col-md-3 mb-4">
-        <div class="card bg-success bg-opacity-10 border-success text-light h-100 text-center">
-            <div class="card-body">
-                {% if claim.image_icon %}
-                    <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                         class="img-fluid rounded shadow mb-3 border border-success" style="max-height: 100px;">
-                {% endif %}
-                <h6 class="card-title text-truncate">{{ claim.title }}</h6>
-                <span class="badge bg-success">Disponível no RA</span>
-                
-                <a href="https://retroachievements.org/game/{{ claim.ra_id }}" target="_blank" class="btn btn-sm btn-outline-success mt-2 stretched-link">
-                    Jogar Agora
+<div class="row justify-content-center mb-5">
+    <div class="col-lg-10">
+        <div class="glass-panel p-5 text-center position-relative">
+            <img src="https://media.retroachievements.org/UserPic/SrLeo12.png" 
+                 class="profile-avatar mb-3 shadow-lg" alt="Avatar">
+            
+            <h1 class="mb-2 text-white">Cnat</h1>
+            <p class="text-info font-monospace mb-4">@Junior Developer</p>
+            
+            <div class="d-flex justify-content-center gap-3">
+                <a href="https://github.com/CarlosNatanael" class="btn btn-outline-light btn-sm rounded-pill px-4">
+                    <i class="fa-brands fa-github me-2"></i>GitHub
+                </a>
+                <a href="https://retroachievements.org/user/Cnat" class="btn btn-outline-warning btn-sm rounded-pill px-4">
+                    <i class="fa-solid fa-trophy me-2"></i>RA Profile
                 </a>
             </div>
         </div>
     </div>
-    {% endfor %}
+</div>
+
+{% if active %}
+<div class="container mb-5">
+    <h3 class="mb-4"><i class="fa-solid fa-code me-2"></i>Em Desenvolvimento</h3>
+    <div class="row g-4">
+        {% for claim in active %}
+        <div class="col-md-6 col-lg-4">
+            <div class="game-card d-flex">
+                <div style="width: 100px; flex-shrink: 0;">
+                    {% if claim.image_icon %}
+                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                             class="h-100 w-100 object-fit-cover" style="border-right: 1px solid rgba(255,255,255,0.1)">
+                    {% else %}
+                        <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" class="h-100 w-100 p-3 opacity-50">
+                    {% endif %}
+                </div>
+                
+                <div class="p-3 flex-grow-1 d-flex flex-column justify-content-center">
+                    <h5 class="fw-bold text-white mb-1 text-truncate">{{ claim.title }}</h5>
+                    
+                    <div class="d-flex align-items-center mb-2">
+                        {% if claim.console_icon %}
+                            <img src="{{ claim.console_icon }}" width="16" class="me-2">
+                        {% endif %}
+                        <span class="badge-console">{{ claim.console }}</span>
+                    </div>
+
+                    <div class="mb-2">
+                        <span class="badge bg-{{ claim.status_color }} bg-opacity-75 border border-{{ claim.status_color }}">
+                            {{ claim.status_label }}
+                        </span>
+                    </div>
+
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-info" style="width: {{ claim.progress }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endif %}
 
-<style>
-    /* Efeito simples de hover nos cards */
-    .hover-effect:hover {
-        transform: translateY(-5px);
-        transition: transform 0.3s ease;
-        border-color: #aaa !important;
-    }
-</style>
+{% if finished %}
+<div class="container mb-5">
+    <h3 class="mb-4"><i class="fa-solid fa-star me-2"></i>Publicados & Masterizados</h3>
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
+        {% for claim in finished %}
+        <div class="col">
+            <a href="https://retroachievements.org/game/{{ claim.ra_id }}" target="_blank" class="text-decoration-none">
+                <div class="game-card text-center p-0 h-100 position-relative group-hover">
+                    <div class="position-absolute top-0 end-0 bg-success text-white px-2 py-1" 
+                         style="font-size: 0.6rem; border-bottom-left-radius: 8px;">
+                         <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    {% if claim.image_icon %}
+                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" class="game-cover">
+                    {% endif %}
+                    
+                    <div class="p-2">
+                        <h6 class="text-white small text-truncate mb-0 mt-1">{{ claim.title }}</h6>
+                        <small class="text-muted" style="font-size: 0.7rem">{{ claim.console }}</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if future %}
+<div class="container mb-5">
+    <h3 class="mb-4 text-secondary"><i class="fa-regular fa-bookmark me-2"></i>Lista de Desejos</h3>
+    <div class="d-flex flex-wrap gap-3 justify-content-center">
+        {% for claim in future %}
+        <div class="wishlist-card position-relative text-center" style="width: 100px;">
+            {% if claim.image_icon %}
+                <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                     class="wishlist-img w-100 shadow-sm mb-1">
+            {% endif %}
+            <div class="badge bg-dark border border-secondary text-secondary" style="font-size: 0.6rem; max-width: 100%;">
+                {{ claim.title[:15] }}..
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 
 {% endblock %}

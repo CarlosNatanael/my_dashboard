@@ -118,10 +118,14 @@ def edit_claim(id):
 @app.route('/portfolio')
 def portfolio():
     all_claims = Claim.query.order_by(Claim.title).all()
-    active_projects = [c for c in all_claims if c.status != 'published']
+    active_projects = [c for c in all_claims if c.status not in ['published', 'wishlist']]
     finished_projects = [c for c in all_claims if c.status == 'published']
+    future_projects = [c for c in all_claims if c.status == 'wishlist']
     
-    return render_template('public.html', active=active_projects, finished=finished_projects)
+    return render_template('public.html', 
+                         active=active_projects, 
+                         finished=finished_projects,
+                         future=future_projects)
 
 if __name__ == "__main__":
     app.run(debug=True)

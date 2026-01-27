@@ -34,6 +34,10 @@
                             <label class="form-label text-warning">Status do Roteiro</label>
                             <select class="form-select bg-secondary text-light border-0 p-3" name="status" style="font-size: 1.1em;">
                                 
+                                <optgroup label="0. Futuro">
+                                    <option value="wishlist" {% if claim.status == 'wishlist' %}selected{% endif %}>🌟 Lista de Desejos (Pretendo Fazer)</option>
+                                </optgroup>
+
                                 <optgroup label="1. Início">
                                     <option value="claim" {% if claim.status == 'claim' %}selected{% endif %}>📍 Adicionado a Claim</option>
                                     <option value="ram" {% if claim.status == 'ram' %}selected{% endif %}>🔍 Cavando/Inspecionando RAM</option>
