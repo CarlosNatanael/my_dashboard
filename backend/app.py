@@ -29,7 +29,7 @@ def get_ra_game_info(game_id):
 
 @app.route('/')
 def index():
-    claims = Claim.query.order_by(Claim.update_at.desc()).all()
+    claims = Claim.query.order_by(Claim.updated_at.desc()).all()
     return render_template('index.html', claims=claims)
 
 if __name__ == "__main__":

@@ -14,8 +14,8 @@ class Claim(db.Model):
     progress = db.Column(db.Integer, default=0)
     notes = db.Column(db.Text, nullable=True)
 
-    created_at = db.Column(db.Datetime, default=datetime.utcnow)
-    update_at = db.Colmun(db.Datetime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):
         return f'<Claim {self.title} - {self.status}>'
