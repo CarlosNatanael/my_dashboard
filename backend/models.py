@@ -8,6 +8,7 @@ class Claim(db.Model):
     title = db.Column(db.String(100), nullable=False)
     console = db.Column(db.String(50), nullable=False)
     ra_id = db.Column(db.Integer, nullable=True)
+    image_icon = db.Column(db.String(100), nullable=True)
 
     status = db.Column(db.String(20), default='backlog')
     progress = db.Column(db.Integer, default=0)

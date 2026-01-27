@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Meus Projetos - RA Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Painel de Desenvolvimento</h2>
+
+<div class="row">
+    {% for claim in claims %}
+    <div class="col-md-4 mb-4">
+        <div class="card bg-dark border-secondary text-light h-100">
+            <div class="row g-0">
+                <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
+                    {% if claim.image_icon %}
+                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                             class="img-fluid rounded-start" alt="Ícone do Jogo">
+                    {% else %}
+                        <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" 
+                             class="img-fluid opacity-50" alt="Sem ícone">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ claim.title }}</h5>
+                        <span class="badge bg-primary">{{ claim.console }}</span>
+                        <span class="badge bg-warning text-dark">{{ claim.status }}</span>
+                        
+                        <div class="progress mt-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" 
+                                 style="width: {{ claim.progress }}%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
