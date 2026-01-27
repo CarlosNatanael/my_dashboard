@@ -419,3 +419,24 @@ select.form-control {
         margin-bottom: 30px;
     }
 }
+
+/* --- Ajuste do Rodapé --- */
+.site-footer {
+    text-align: center; /* Centraliza tudo que está dentro do footer */
+    margin-top: auto;   /* Empurra o rodapé para o final se a página for curta */
+}
+
+.footer-content {
+    text-align: center; /* Garante que o texto dentro do bloco fique no meio */
+    display: block;     /* Garante que o bloco ocupe a largura disponível */
+    margin-left: auto;  
+    margin-right: auto;
+}
+
+/* Opcional: Se quiser que os parágrafos fiquem na mesma linha em telas grandes */
+@media (min-width: 768px) {
+    .footer-content p {
+        display: inline-block;
+        margin: 0 10px;
+    }
+}

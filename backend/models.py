@@ -25,19 +25,25 @@ class Claim(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     STATUS_MAP = {
-        'wishlist': ('Lista de Desejos (Futuro)', 'dark'),
-        'claim': ('Claim Ativa', 'secondary'),
+        'wishlist': ('🌟 Lista de Desejos (Futuro)', 'dark'),
+        'jr_plan_review': ('Pedir Revisão do Plano (Set Plan)', 'warning'),
+        'jr_plan_wait': ('Aguardando Aprovação do Plano', 'secondary'),
+        'claim': ('Adicionado a Claim', 'secondary'),
         'ram': ('Cavando/Inspecionando RAM', 'info'),
         'logic': ('Desenvolvendo Achievements', 'primary'),
         'badge': ('Desenvolvendo Badges/Ícones', 'primary'),
         'writing': ('Aguardando Revisão de Escrita', 'warning'),
         'art_team': ('Aguardando Equipe de Arte', 'warning'),
         'playtest': ('Enviado p/ Player-Tester', 'warning'),
-        'testing': ('Testando Achievements', 'light text-dark'),
-        'pre_release': ('Últimos Testes (Pré-Lançamento)', 'success'),
-        'published': ('Publicado / Ativo', 'success'),
+        'testing': ('Testando Achievements (Local)', 'light text-dark'),
+        'pre_release': ('Últimos testes (Pré-Lançamento)', 'success'),
+        'jr_review_request': ('Solicitar Revisão do Conjunto', 'warning'),
+        'jr_queue': ('Na Fila / Backlog de Review', 'secondary'),
+        'jr_cr_active': ('Sendo Revisado por Code Reviewer', 'info'),
+        'published': ('Publicado (Pelo CR)', 'success'),
         'tickets': ('Atendendo Tickets', 'danger'),
-        'revision': ('Revisão de Conjunto', 'danger')
+        'revision': ('Revisão de Conjunto (Bugfix)', 'danger'),
+        'jr_republish': ('Solicitar Republicação (Pós-Fix)', 'warning')
     }
 
     @property

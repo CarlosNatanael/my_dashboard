@@ -31,41 +31,50 @@
                 <form method="POST">
                     <div class="row">
                         <div class="col-md-12 mb-4">
-                            <label class="form-label text-warning">Status do Roteiro</label>
-                            <select class="form-select bg-secondary text-light border-0 p-3" name="status" style="font-size: 1.1em;">
-                                
-                                <optgroup label="0. Futuro">
-                                    <option value="wishlist" {% if claim.status == 'wishlist' %}selected{% endif %}>🌟 Lista de Desejos (Pretendo Fazer)</option>
-                                </optgroup>
+                        <label class="form-label text-warning">Status do Roteiro (Jr. Developer)</label>
+                        <select class="form-select bg-secondary text-light border-0 p-3" name="status" style="font-size: 1.1em;">
 
-                                <optgroup label="1. Início">
-                                    <option value="claim" {% if claim.status == 'claim' %}selected{% endif %}>📍 Adicionado a Claim</option>
-                                    <option value="ram" {% if claim.status == 'ram' %}selected{% endif %}>🔍 Cavando/Inspecionando RAM</option>
-                                </optgroup>
-
-                                <optgroup label="2. Desenvolvimento">
-                                    <option value="logic" {% if claim.status == 'logic' %}selected{% endif %}>💻 Desenvolvendo Achievements</option>
-                                    <option value="badge" {% if claim.status == 'badge' %}selected{% endif %}>🎨 Desenvolvendo Badges/Ícones</option>
-                                </optgroup>
-
-                                <optgroup label="3. Apoio & Equipes">
-                                    <option value="writing" {% if claim.status == 'writing' %}selected{% endif %}>📝 Aguardando Revisão de Escrita</option>
-                                    <option value="art_team" {% if claim.status == 'art_team' %}selected{% endif %}>🖌️ Aguardando Equipe de Arte</option>
-                                    <option value="playtest" {% if claim.status == 'playtest' %}selected{% endif %}>🎮 Enviado p/ Player-Tester</option>
-                                </optgroup>
-
-                                <optgroup label="4. Testes">
-                                    <option value="testing" {% if claim.status == 'testing' %}selected{% endif %}>🕹️ Testando Achievements (Local)</option>
-                                    <option value="pre_release" {% if claim.status == 'pre_release' %}selected{% endif %}>🚀 Últimos testes antes do lançamento</option>
-                                </optgroup>
-
-                                <optgroup label="5. Finalizado / Manutenção">
-                                    <option value="published" {% if claim.status == 'published' %}selected{% endif %}>🏆 Publicado</option>
-                                    <option value="tickets" {% if claim.status == 'tickets' %}selected{% endif %}>🎫 Atendendo Tickets</option>
-                                    <option value="revision" {% if claim.status == 'revision' %}selected{% endif %}>🔧 Revisão de Conjunto (Bugfix)</option>
-                                </optgroup>
-
-                            </select>
+                            <optgroup label="0. Futuro">
+                                <option value="wishlist" {% if claim.status == 'wishlist' %}selected{% endif %}>Lista de Desejos (Pretendo Fazer)</option>
+                            </optgroup>
+                        
+                            <optgroup label="1. Planejamento (JrDev)">
+                                <option value="jr_plan_review" {% if claim.status == 'jr_plan_review' %}selected{% endif %}>Pedir Revisão do Plano</option>
+                                <option value="jr_plan_wait" {% if claim.status == 'jr_plan_wait' %}selected{% endif %}>Aguardando Aprovação do Plano</option>
+                            </optgroup>
+                        
+                            <optgroup label="2. Mão na Massa">
+                                <option value="claim" {% if claim.status == 'claim' %}selected{% endif %}>Claim Ativa (Começando)</option>
+                                <option value="ram" {% if claim.status == 'ram' %}selected{% endif %}>Cavando RAM</option>
+                                <option value="logic" {% if claim.status == 'logic' %}selected{% endif %}>Codando Lógica</option>
+                                <option value="badge" {% if claim.status == 'badge' %}selected{% endif %}>Desenhando Badges</option>
+                            </optgroup>
+                        
+                            <optgroup label="3. Apoio & Equipes">
+                                <option value="writing" {% if claim.status == 'writing' %}selected{% endif %}>Revisão de Escrita</option>
+                                <option value="art_team" {% if claim.status == 'art_team' %}selected{% endif %}>Equipe de Arte</option>
+                                <option value="playtest" {% if claim.status == 'playtest' %}selected{% endif %}>Player-Tester</option>
+                            </optgroup>
+                        
+                            <optgroup label="4. Testes Finais">
+                                <option value="testing" {% if claim.status == 'testing' %}selected{% endif %}>Testes Locais</option>
+                                <option value="pre_release" {% if claim.status == 'pre_release' %}selected{% endif %}>Pré-Lançamento (Pronto p/ Review)</option>
+                            </optgroup>
+                        
+                            <optgroup label="5. Processo de Code Review (JrDev)">
+                                <option value="jr_review_request" {% if claim.status == 'jr_review_request' %}selected{% endif %}>Pedir Revisão do Conjunto</option>
+                                <option value="jr_queue" {% if claim.status == 'jr_queue' %}selected{% endif %}>No Backlog (Aguardando CR)</option>
+                                <option value="jr_cr_active" {% if claim.status == 'jr_cr_active' %}selected{% endif %}>Code Review em Andamento</option>
+                            </optgroup>
+                        
+                            <optgroup label="6. Publicação & Manutenção">
+                                <option value="published" {% if claim.status == 'published' %}selected{% endif %}>Publicado</option>
+                                <option value="tickets" {% if claim.status == 'tickets' %}selected{% endif %}>Atendendo Tickets</option>
+                                <option value="revision" {% if claim.status == 'revision' %}selected{% endif %}>Correção de Bugs (Pós-Ticket)</option>
+                                <option value="jr_republish" {% if claim.status == 'jr_republish' %}selected{% endif %}>Pedir Republicação</option>
+                            </optgroup>
+                        
+                        </select>
                         </div>
 
                         <div class="col-md-12 mb-3">

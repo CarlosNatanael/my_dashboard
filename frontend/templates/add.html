@@ -45,9 +45,17 @@
                     <div class="mb-4">
                         <label for="status" class="form-label">Status Inicial</label>
                         <select class="form-select bg-dark text-light border-secondary" name="status">
-                            <option value="backlog">Ideia / Backlog</option>
-                            <option value="ram_digging">Cavando RAM</option>
-                            <option value="coding">Codando</option>
+
+                            <optgroup label="Planejamento">
+                                <option value="wishlist">Lista de Desejos</option>
+                                <option value="jr_plan_review">Pedir Revisão do Plano</option>
+                            </optgroup>
+                        
+                            <optgroup label="Início Rápido">
+                                <option value="claim" selected>Claim Ativa</option>
+                                <option value="ram">🔍 Cavando RAM</option>
+                            </optgroup>
+                        
                         </select>
                     </div>
 
