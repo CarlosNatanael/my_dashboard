@@ -1,0 +1,20 @@
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+db = SQLAlchemy()
+
+class Claim(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    console = db.Column(db.String(50), nullable=False)
+    ra_id = db.Column(db.Integer, nullable=True)
+
+    status = db.Column(db.String(20), default='backlog')
+    progress = db.Column(db.Integer, default=0)
+    notes = db.Column(db.Text, nullable=True)
+
+    created_at = db.Column(db.Datetime, default=datetime.utcnow)
+    update_at = db.Colmun(db.Datetime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<Claim {self.title} - {self.status}>'
