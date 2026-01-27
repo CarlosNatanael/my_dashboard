@@ -1,9 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash
 from config import API_USER, API_KEY
 from models import db, Claim
 import requests
 import os
-
 
 template_dir = os.path.abspath('../frontend/templates')
 static_dir = os.path.abspath('../frontend/static')
@@ -36,6 +35,40 @@ def get_ra_game_info(game_id):
 def index():
     claims = Claim.query.order_by(Claim.updated_at.desc()).all()
     return render_template('index.html', claims=claims)
+
+@app.route('/add', methods=['GET', 'POST'])
+def add_claim():
+    if request.method == 'POST':
+        ra_id = request.form.get('ra_id')
+        title = request.form.get('title')
+        console = request.form.get('console')
+        status = request.form.get('status')
+        image_icon = None
+
+        if ra_id:
+            try:
+                game_data = get_ra_game_info(ra_id)
+                if game_data and 'Title' in game_data:
+                    image_icon = game_data.get('ImageIcon')
+                    if not title:
+                        title = game_data.get('Title')
+                    if not console:
+                        console = game_data.get('ConsoleName')
+            except Exception as e:
+                print(f"Erro na API: {e}")
+
+            if title and console:
+                new_claim = Claim(
+                    title=title,
+                    console=console,
+                    ra_id=ra_id if ra_id else None,
+                    image_icon=image_icon,
+                    status=status
+                )
+                db.session.add(new_claim)
+                db.session.commit()
+                return redirect(url_for('index'))
+    return render_template('add.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
