@@ -22,7 +22,7 @@ def get_console_icon_url(target_console_id):
     params = {'z': API_USER, 'y': API_KEY}
 
     try:
-        response = request.get(url, params=params)
+        response = requests.get(url, params=params)
         if response.status_code == 200:
             consoles = response.json()
             for console in consoles:
@@ -33,17 +33,15 @@ def get_console_icon_url(target_console_id):
     return None
 
 def get_ra_game_info(game_id):
-
     url = "https://retroachievements.org/API/API_GetGame.php"
-    params = {
-        'z': API_USER,
-        'y': API_KEY,
-        'i': game_id
-    }
-
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
-        return response.json()
+    params = {'z': API_USER, 'y': API_KEY, 'i': game_id}
+    
+    try:
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            return response.json()
+    except Exception as e:
+        print(f"Erro ao buscar info do jogo: {e}")
     return None
 
 @app.route('/')
@@ -66,7 +64,10 @@ def add_claim():
             try:
                 game_data = get_ra_game_info(ra_id)
                 if game_data and 'Title' in game_data:
-                    image_icon = game_data.get('ImageIcon')
+                    raw_image = game_data.get('ImageIcon', '')
+                    if raw_image:
+                        image_icon = raw_image.split('/')[-1].replace('.png', '')
+                    
                     if not title:
                         title = game_data.get('Title')
                     if not console:
