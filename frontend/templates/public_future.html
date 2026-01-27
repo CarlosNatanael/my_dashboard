@@ -14,35 +14,112 @@
     <div class="wishlist-grid">
         {% for claim in future %}
         <div class="wishlist-item-card">
-            <div class="d-flex align-items-center gap-3">
+            
+            <div class="wishlist-cover">
                 {% if claim.image_icon %}
-                    <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                         style="width: 50px; height: 50px; border: 1px solid var(--accent-gold); object-fit: cover;">
+                    <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" alt="Cover">
+                {% else %}
+                    <div class="no-icon"><i class="fas fa-gamepad"></i></div>
                 {% endif %}
-                <div>
-                    <h5 style="margin: 0; color: var(--accent-gold);">{{ claim.title }}</h5>
-                    <small style="color: var(--text-muted);">{{ claim.console }}</small>
+            </div>
+
+            <div class="wishlist-info">
+                <div class="d-flex justify-content-between align-items-center h-100">
+                    
+                    <div>
+                        <h5 class="wishlist-title">{{ claim.title }}</h5>
+                        <div class="wishlist-console">
+                            {% if claim.console_icon %}
+                                <img src="{{ claim.console_icon }}" width="12" style="vertical-align: middle; margin-right: 4px;"> 
+                            {% endif %}
+                            {{ claim.console }}
+                        </div>
+                    </div>
+
+                    <div class="wishlist-badge ms-2">
+                        <span class="status-badge badge-{{ claim.status }}">
+                            {{ claim.status_label }}
+                        </span>
+                    </div>
+
                 </div>
             </div>
-            <div class="mt-2">
-                <span class="status-badge badge-dark">WAITING</span>
-            </div>
+
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <p style="text-align: center;">No future plans yet.</p>
+    <p style="text-align: center; padding: 20px; color: var(--text-muted);">
+        <i class="fas fa-scroll"></i> No future plans yet.
+    </p>
     {% endif %}
 </div>
 {% endblock %}
 
 {% block extra_css %}
 <style>
-    .wishlist-grid { display: grid; gap: 15px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+    .wishlist-grid { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+    }
+
     .wishlist-item-card { 
+        display: flex;
+        align-items: center;
         background: rgba(255,255,255,0.05); 
-        padding: 15px; 
-        border: 1px dashed var(--border-color); 
+        padding: 10px; 
+        border: 1px dashed var(--border-color);
+        transition: transform 0.2s;
+        gap: 15px;
+    }
+    
+    .wishlist-item-card:hover {
+        background: rgba(255,255,255,0.08);
+        border-color: var(--accent-pink);
+        transform: translateX(5px);
+    }
+
+    /* Imagem */
+    .wishlist-cover img, .no-icon {
+        width: 50px; 
+        height: 50px; 
+        object-fit: cover; 
+        border: 1px solid var(--accent-gold);
+        flex-shrink: 0;
+    }
+    
+    .no-icon {
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        background: rgba(0,0,0,0.3);
+        color: var(--text-muted);
+    }
+
+    /* Info Container */
+    .wishlist-info {
+        flex-grow: 1;
+        min-width: 0; /* Evita quebra de layout com textos longos */
+    }
+
+    .wishlist-title {
+        margin: 0 0 4px 0;
+        color: var(--accent-gold);
+        font-size: 14px;
+        line-height: 1.2;
+    }
+
+    .wishlist-console {
+        color: var(--text-muted);
+        font-size: 11px;
+    }
+
+    /* Badge */
+    .status-badge {
+        font-size: 10px;
+        padding: 4px 8px;
+        white-space: nowrap;
     }
 </style>
 {% endblock %}

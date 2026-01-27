@@ -25,25 +25,25 @@ class Claim(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     STATUS_MAP = {
-        'wishlist': ('🌟 Lista de Desejos (Futuro)', 'dark'),
-        'jr_plan_review': ('Pedir Revisão do Plano (Set Plan)', 'warning'),
-        'jr_plan_wait': ('Aguardando Aprovação do Plano', 'secondary'),
-        'claim': ('Adicionado a Claim', 'secondary'),
-        'ram': ('Cavando/Inspecionando RAM', 'info'),
-        'logic': ('Desenvolvendo Achievements', 'primary'),
-        'badge': ('Desenvolvendo Badges/Ícones', 'primary'),
-        'writing': ('Aguardando Revisão de Escrita', 'warning'),
-        'art_team': ('Aguardando Equipe de Arte', 'warning'),
-        'playtest': ('Enviado p/ Player-Tester', 'warning'),
-        'testing': ('Testando Achievements (Local)', 'light text-dark'),
-        'pre_release': ('Últimos testes (Pré-Lançamento)', 'success'),
-        'jr_review_request': ('Solicitar Revisão do Conjunto', 'warning'),
-        'jr_queue': ('Na Fila / Backlog de Review', 'secondary'),
-        'jr_cr_active': ('Sendo Revisado por Code Reviewer', 'info'),
-        'published': ('Publicado (Pelo CR)', 'success'),
-        'tickets': ('Atendendo Tickets', 'danger'),
-        'revision': ('Revisão de Conjunto (Bugfix)', 'danger'),
-        'jr_republish': ('Solicitar Republicação (Pós-Fix)', 'warning')
+        'wishlist': ('Wishlist (Future)', 'dark'),
+        'jr_plan_review': ('Request Plan Review (Set Plan)', 'warning'),
+        'jr_plan_wait': ('Awaiting Plan Approval', 'secondary'),
+        'claim': ('Added to Claim', 'secondary'),
+        'ram': ('Digging/Inspecting RAM', 'info'),
+        'logic': ('Developing Achievements', 'primary'),
+        'badge': ('Developing Badges/Icons', 'primary'),
+        'writing': ('Awaiting Writing Review', 'warning'),
+        'art_team': ('Awaiting Art Team', 'warning'),
+        'playtest': ('Sent to Player-Tester', 'warning'),
+        'test': ('Testing Achievements (Local)', 'light-dark text'),
+        'pre_release': ('Final tests (Pre-Release)', 'success'),
+        'jr_review_request': ('Request Set Review', 'warning'),
+        'jr_queue': ('In Review Queue/Backlog', 'secondary'),
+        'jr_cr_active': ('Reviewed by Code Reviewer', 'info'),
+        'published': ('Published', 'success'),
+        'tickets': ('Attending Tickets', 'danger'),
+        'review': ('Set Review (Bugfix)', 'danger'),
+        'jr_republish': ('Request Republishing (Postfix)', 'warning')
     }
 
     @property
