@@ -1,0 +1,43 @@
+<div class="admin-sidebar">
+    <div class="sidebar-header">
+        <h5 class="retro-font">Dev Console</h5>
+        <small class="text-muted">v1.0.0</small>
+    </div>
+    
+    <div class="sidebar-stats">
+        {% set active_projects = claims|selectattr('status', 'ne', 'published')|list %}
+        {% set pre_release_projects = claims|selectattr('status', 'eq', 'pre_release')|list %}
+        
+        <div class="stat-item">
+            <i class="fa-solid fa-code-branch"></i>
+            <span>Projetos Ativos: <strong>{{ active_projects|length }}</strong></span>
+        </div>
+        <div class="stat-item">
+            <i class="fa-solid fa-rocket"></i>
+            <span>Próximo Release: <strong class="text-info">Em {{ pre_release_projects|length }} projetos</strong></span>
+        </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+        <a href="{{ url_for('admin_dashboard') }}" class="nav-item active">
+            <i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+        <a href="{{ url_for('add_claim') }}" class="nav-item">
+            <i class="fa-solid fa-plus"></i> Novo Projeto
+        </a>
+        <a href="{{ url_for('index') }}" class="nav-item">
+            <i class="fa-solid fa-eye"></i> Visualizar Público
+        </a>
+        <div class="nav-divider"></div>
+        <a href="#" class="nav-item" data-bs-toggle="modal" data-bs-target="#statsModal">
+            <i class="fa-solid fa-chart-line"></i> Estatísticas
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-solid fa-gear"></i> Configurações
+        </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+        <small class="text-muted">Última atualização: Agora</small>
+    </div>
+</div>

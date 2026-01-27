@@ -1,30 +1,101 @@
 {% extends "base.html" %}
 
-{% block title %}Acesso Restrito - Dev Dashboard{% endblock %}
+{% block title %}Dev Console Login{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .login-card {
+        background: rgba(20, 25, 45, 0.95);
+        border: 2px solid transparent;
+        border-image: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0) 1;
+        border-radius: 20px;
+        padding: 3rem;
+        width: 100%;
+        max-width: 400px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .login-header i {
+        font-size: 3rem;
+        color: var(--accent-blue);
+        margin-bottom: 1rem;
+        text-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+    }
+    
+    .form-control {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: white !important;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .form-control:focus {
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.2);
+    }
+    
+    .login-btn {
+        background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+        border: none;
+        padding: 0.75rem;
+        font-family: var(--font-retro);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        width: 100%;
+        margin-top: 1rem;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center" style="min-height: 60vh; align-items: center;">
-    <div class="col-md-4">
-        <div class="glass-panel p-4 text-center">
-            <h3 class="mb-4 text-white">Área do Desenvolvedor</h3>
-            
-            <form method="POST">
-                <div class="mb-3 text-start">
-                    <label class="form-label text-info">Usuário</label>
-                    <input type="text" name="username" class="form-control bg-dark text-white border-secondary" required autofocus>
-                </div>
-                
-                <div class="mb-4 text-start">
-                    <label class="form-label text-info">Senha</label>
-                    <input type="password" name="password" class="form-control bg-dark text-white border-secondary" required>
-                </div>
-
-                <button type="submit" class="btn btn-info w-100 fw-bold">Entrar no Sistema</button>
-            </form>
-            
-            <div class="mt-3">
-                <a href="{{ url_for('index') }}" class="text-muted small text-decoration-none">Voltar ao site público</a>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <i class="fa-solid fa-lock"></i>
+            <h3 class="retro-font">DEV CONSOLE</h3>
+            <p class="text-muted">Acesso Restrito ao Desenvolvedor</p>
+        </div>
+        
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label text-info">
+                    <i class="fa-solid fa-user me-1"></i>Username
+                </label>
+                <input type="text" name="username" class="form-control" 
+                       placeholder="dev_user" required autofocus>
             </div>
+            
+            <div class="mb-4">
+                <label class="form-label text-info">
+                    <i class="fa-solid fa-key me-1"></i>Password
+                </label>
+                <input type="password" name="password" class="form-control" 
+                       placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn login-btn">
+                <i class="fa-solid fa-terminal me-2"></i>Acessar Sistema
+            </button>
+        </form>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="text-muted small">
+                <i class="fa-solid fa-arrow-left me-1"></i>Voltar ao portfólio público
+            </a>
         </div>
     </div>
 </div>

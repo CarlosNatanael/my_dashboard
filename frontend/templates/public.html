@@ -1,33 +1,175 @@
+<!-- public.html CORRIGIDO -->
 {% extends "base.html" %}
 
-{% block title %}Portfólio{% endblock %}
+{% block title %}Portfólio - Cnat | RA Developer{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, rgba(20, 25, 45, 0.9), rgba(40, 20, 60, 0.9));
+        border-radius: 20px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://media.retroachievements.org/Images/system/SNES.png') center/cover;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .profile-avatar-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid var(--accent-blue);
+        padding: 4px;
+        background: var(--bg-dark);
+    }
+    
+    .online-status {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 15px;
+        height: 15px;
+        background-color: #00ff00;
+        border-radius: 50%;
+        border: 2px solid var(--bg-dark);
+    }
+    
+    /* Status Summary */
+    .status-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-5px);
+    }
+    
+    .stat-number {
+        font-family: var(--font-retro);
+        font-size: 2rem;
+        color: var(--accent-blue);
+        display: block;
+    }
+    
+    /* Game Cards */
+    .game-card {
+        background: rgba(20, 25, 45, 0.8);
+        border: 2px solid transparent;
+        border-image: linear-gradient(45deg, var(--accent-blue), var(--accent-purple)) 1;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .game-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 170, 255, 0.2);
+    }
+    
+    .game-cover {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+    
+    /* Section Titles */
+    .section-title {
+        font-family: var(--font-retro);
+        font-size: 1.2rem;
+        color: var(--accent-gold);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid rgba(255, 204, 0, 0.3);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-
-<div class="row justify-content-center mb-4">
-    <div class="col-lg-8">
-        <div class="glass-panel p-4 text-center">
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-content text-center">
+        <div class="profile-avatar-wrapper mb-3">
             <img src="https://media.retroachievements.org/UserPic/SrLeo12.png" 
-                 class="profile-avatar mb-2" alt="Avatar">
-            
-            <h2 class="mb-1">Cnat</h2>
-            <p class="text-info font-monospace mb-3">@Junior Developer</p>
-            
-            <div class="d-flex justify-content-center gap-2">
-                <a href="https://github.com/CarlosNatanael" class="btn btn-outline-light btn-sm px-3">
-                    <i class="fa-brands fa-github me-1"></i>GitHub
-                </a>
-                <a href="https://retroachievements.org/user/Cnat" class="btn btn-outline-warning btn-sm px-3">
-                    <i class="fa-solid fa-trophy me-1"></i>RA Profile
-                </a>
-            </div>
+                 class="profile-avatar" alt="Avatar">
+            <div class="online-status"></div>
         </div>
+        
+        <h1 class="retro-font mb-2">Cnat</h1>
+        <p class="text-info font-monospace mb-3">@Junior Developer | RetroAchievements</p>
+        
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="https://github.com/CarlosNatanael" class="btn btn-outline-light px-4">
+                <i class="fa-brands fa-github me-2"></i>GitHub
+            </a>
+            <a href="https://retroachievements.org/user/Cnat" class="btn btn-warning px-4">
+                <i class="fa-solid fa-trophy me-2"></i>RA Profile
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Summary -->
+<div class="status-summary">
+    <div class="stat-card">
+        <span class="stat-number">{{ active|length }}</span>
+        <span class="text-muted">Em Desenvolvimento</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ finished|length }}</span>
+        <span class="text-muted">Publicados</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ future|length }}</span>
+        <span class="text-muted">Na Wishlist</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">{{ active|length + finished|length }}</span>
+        <span class="text-muted">Total de Projetos</span>
     </div>
 </div>
 
 {% if active %}
 <div class="mb-4">
-    <h3 class="mb-3"><i class="fa-solid fa-code me-1"></i>Em Desenvolvimento</h3>
+    <h3 class="section-title">
+        <i class="fa-solid fa-code me-1"></i>Em Desenvolvimento
+    </h3>
     <div class="row g-3">
         {% for claim in active %}
         <div class="col-md-6 col-lg-4">
@@ -37,7 +179,8 @@
                         <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
                              class="h-100 w-100 object-fit-cover rounded-start">
                     {% else %}
-                        <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" class="h-100 w-100 p-2 opacity-50">
+                        <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" 
+                             class="h-100 w-100 p-2 opacity-50">
                     {% endif %}
                 </div>
                 
@@ -73,7 +216,9 @@
 
 {% if finished %}
 <div class="mb-4">
-    <h3 class="mb-3"><i class="fa-solid fa-star me-1"></i>Publicados</h3>
+    <h3 class="section-title">
+        <i class="fa-solid fa-star me-1"></i>Publicados
+    </h3>
     <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-2">
         {% for claim in finished %}
         <div class="col">
@@ -98,19 +243,59 @@
 
 {% if future %}
 <div class="mb-4">
-    <h3 class="mb-3 text-secondary"><i class="fa-regular fa-bookmark me-1"></i>Lista de Desejos</h3>
+    <h3 class="section-title text-secondary">
+        <i class="fa-regular fa-bookmark me-1"></i>Lista de Desejos
+    </h3>
     <div class="d-flex flex-wrap gap-2">
         {% for claim in future %}
         <div class="text-center" style="width: 70px;">
             {% if claim.image_icon %}
                 <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                     class="w-100 rounded mb-1" style="height: 70px; object-fit: cover;">
+                     class="w-100 rounded mb-1 wishlist-img" 
+                     style="height: 70px; object-fit: cover;">
             {% endif %}
-            <small class="text-muted d-block text-truncate">{{ claim.title|truncate(12) }}</small>
+            <small class="text-muted d-block text-truncate">{{ claim.title[:12] }}{% if claim.title|length > 12 %}...{% endif %}</small>
         </div>
         {% endfor %}
     </div>
 </div>
 {% endif %}
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Adicionar efeito de hover nas imagens da wishlist
+    document.addEventListener('DOMContentLoaded', function() {
+        const wishlistImages = document.querySelectorAll('.wishlist-img');
+        wishlistImages.forEach(img => {
+            img.parentElement.addEventListener('mouseenter', function() {
+                img.style.filter = 'grayscale(0%) opacity(1)';
+                img.style.transform = 'scale(1.05)';
+            });
+            img.parentElement.addEventListener('mouseleave', function() {
+                img.style.filter = 'grayscale(100%) opacity(0.6)';
+                img.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Animar cards ao entrar na viewport
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.game-card').forEach(card => {
+            observer.observe(card);
+        });
+    });
+</script>
 {% endblock %}

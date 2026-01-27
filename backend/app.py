@@ -3,6 +3,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import API_USER, API_KEY
 from models import db, Claim, User
+from datetime import datetime
 import requests
 import os
 
@@ -82,7 +83,8 @@ def logout():
 @login_required
 def admin_dashboard():
     claims = Claim.query.order_by(Claim.updated_at.desc()).all()
-    return render_template('index.html', claims=claims)
+    current_time = datetime.utcnow()  # Adicione esta linha
+    return render_template('index.html', claims=claims, current_time=current_time)
 
 @app.route('/add', methods=['GET', 'POST'])
 @login_required

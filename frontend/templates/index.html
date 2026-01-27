@@ -1,55 +1,190 @@
 {% extends "base.html" %}
 
-{% block title %}Meus Projetos - RA Dashboard{% endblock %}
+{% block title %}Dev Console - RA Dashboard{% endblock %}
 
 {% block content %}
-<h2 class="mb-3">Painel de Desenvolvimento</h2>
-
-<div class="row g-3">
-    {% for claim in claims %}
-    <div class="col-md-6 col-lg-4">
-        <div class="card bg-dark border-secondary text-light h-100">
-            <div class="row g-0">
-                <div class="col-4 d-flex align-items-center p-2">
-                    {% if claim.image_icon %}
-                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                             class="img-fluid rounded" alt="{{ claim.title }}">
-                    {% else %}
-                        <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" 
-                             class="img-fluid opacity-50 p-2" alt="Sem ícone">
-                    {% endif %}
+<div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+        {% include 'sidebar.html' %}
+    </div>
+    
+    <!-- Main Content -->
+    <div class="col-md-9">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="retro-font">Meus Projetos</h2>
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    <i class="fa-solid fa-filter"></i> Filtrar
+                </button>
+                <button class="btn btn-sm btn-outline-warning" id="exportBtn">
+                    <i class="fa-solid fa-download"></i> Exportar
+                </button>
+            </div>
+        </div>
+        
+        <!-- Status Quick View -->
+        <div class="row mb-4">
+            {% for status_code, status_info in [
+                ('wishlist', ('wishlist', 'secondary')),
+                ('claim', ('claim', 'info')),
+                ('ram', ('ram', 'primary')),
+                ('published', ('published', 'success')),
+                ('tickets', ('tickets', 'danger'))
+            ] %}
+            {% set count = claims|selectattr('status', 'eq', status_code)|list|length %}
+            {% if count > 0 %}
+            <div class="col-auto">
+                <div class="quick-stat bg-{{ status_info[1] }} bg-opacity-25 p-2 rounded">
+                    <small class="d-block">{{ count }}</small>
+                    <small class="text-muted">{{ status_code }}</small>
                 </div>
-                <div class="col-8">
-                    <div class="card-body p-2">
-                        <h6 class="card-title text-truncate mb-1">{{ claim.title }}</h6>
-                        
-                        <div class="d-flex align-items-center mb-2">
-                            {% if claim.console_icon %}
-                                <img src="{{ claim.console_icon }}" alt="{{ claim.console }}" 
-                                     style="width: 20px; height: 20px; object-fit: contain; margin-right: 6px;">
-                            {% endif %}
-                            <small class="text-muted">{{ claim.console }}</small>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        
+        <!-- Grid de Projetos -->
+        <div class="row g-3" id="projectsGrid">
+            {% for claim in claims %}
+            <div class="col-lg-4 col-md-6 fade-in-up" data-status="{{ claim.status }}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="d-flex align-items-center">
+                                {% if claim.console_icon %}
+                                <img src="{{ claim.console_icon }}" 
+                                     class="me-2" width="24" height="24"
+                                     data-bs-toggle="tooltip" 
+                                     title="{{ claim.console }}">
+                                {% endif %}
+                                <span class="badge bg-{{ claim.status_color }}">
+                                    {{ claim.status_label }}
+                                </span>
+                            </div>
+                            <small class="text-muted">
+                                #{{ claim.id }}
+                            </small>
                         </div>
-                    
-                        <span class="badge bg-{{ claim.status_color }} text-dark mb-2 d-inline-block">
-                            {{ claim.status_label }}
-                        </span>
-
-                        <div class="d-flex align-items-center mb-2">
-                            <small class="text-muted me-2">{{ claim.progress }}%</small>
-                            <div class="progress flex-grow-1" style="height: 4px;">
-                                <div class="progress-bar" style="width: {{ claim.progress }}%;"></div>
+                        
+                        <div class="text-center mb-3">
+                            {% if claim.image_icon %}
+                            <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                                 class="game-icon rounded"
+                                 style="max-width: 100px; height: auto;"
+                                 data-bs-toggle="modal" 
+                                 data-bs-target="#imageModal{{ claim.id }}">
+                            {% endif %}
+                        </div>
+                        
+                        <h6 class="card-title mb-1">{{ claim.title }}</h6>
+                        
+                        <div class="progress-container mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small class="text-muted">Progresso</small>
+                                <small class="fw-bold">{{ claim.progress }}%</small>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ claim.progress }}%"></div>
                             </div>
                         </div>
-
-                        <a href="{{ url_for('edit_claim', id=claim.id) }}" class="btn btn-sm btn-outline-light w-100 stretched-link">
-                            Gerenciar
-                        </a>
+                        
+                        {% if claim.notes %}
+                        <div class="notes-preview mb-3">
+                            <small class="text-muted">Últimas anotações:</small>
+                            <p class="small mb-0 text-truncate">{{ claim.notes[:50] }}...</p>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fa-solid fa-clock me-1"></i>
+                                {{ claim.updated_at.strftime('%d/%m') if claim.updated_at else '' }}
+                            </small>
+                            <a href="{{ url_for('edit_claim', id=claim.id) }}" 
+                               class="btn btn-sm btn-outline-light">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
 </div>
+
+<!-- Modal de Filtro -->
+<div class="modal fade" id="filterModal">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h5 class="modal-title">Filtrar Projetos</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="all" id="filterAll" checked>
+                    <label class="form-check-label" for="filterAll">Todos os projetos</label>
+                </div>
+                {% for status in ['wishlist', 'claim', 'published', 'tickets'] %}
+                <div class="form-check mb-2">
+                    <input class="form-check-input filter-option" type="checkbox" value="{{ status }}" id="filter{{ status }}">
+                    <label class="form-check-label" for="filter{{ status }}">{{ status }}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Filtro de projetos
+    document.querySelectorAll('.filter-option').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const selectedStatus = Array.from(document.querySelectorAll('.filter-option:checked'))
+                .map(cb => cb.value);
+            
+            document.querySelectorAll('#projectsGrid > div').forEach(project => {
+                const status = project.dataset.status;
+                if (selectedStatus.length === 0 || selectedStatus.includes(status)) {
+                    project.style.display = 'block';
+                } else {
+                    project.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Exportar dados
+    document.getElementById('exportBtn').addEventListener('click', function() {
+        const data = {
+            timestamp: new Date().toISOString(),
+            projects: {{ claims|length }},
+            stats: {
+                active: {{ claims|selectattr('status', 'ne', 'published')|list|length }},
+                published: {{ claims|selectattr('status', 'eq', 'published')|list|length }}
+            }
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ra_dashboard_export_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+</script>
 {% endblock %}
