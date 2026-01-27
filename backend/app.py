@@ -17,6 +17,21 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+def get_console_icon_url(target_console_id):
+    url = "https://retroachievements.org/API/API_GetConsoleIDs.php"
+    params = {'z': API_USER, 'y': API_KEY}
+
+    try:
+        response = request.get(url, params=params)
+        if response.status_code == 200:
+            consoles = response.json()
+            for console in consoles:
+                if console.get('ID') == int(target_console_id):
+                    return console.get('IconURL')
+    except Exception as e:
+        print(f"Erro ao buscar icone do console: {e}")
+    return None
+
 def get_ra_game_info(game_id):
 
     url = "https://retroachievements.org/API/API_GetGame.php"
@@ -43,7 +58,9 @@ def add_claim():
         title = request.form.get('title')
         console = request.form.get('console')
         status = request.form.get('status')
+        
         image_icon = None
+        console_icon = None
 
         if ra_id:
             try:
@@ -54,20 +71,27 @@ def add_claim():
                         title = game_data.get('Title')
                     if not console:
                         console = game_data.get('ConsoleName')
+                        console_id = game_data.get('ConsoleID')
+
+                        if console_id:
+                            console_icon = get_console_icon_url(console_id)
+                            
             except Exception as e:
                 print(f"Erro na API: {e}")
 
-            if title and console:
-                new_claim = Claim(
-                    title=title,
-                    console=console,
-                    ra_id=ra_id if ra_id else None,
-                    image_icon=image_icon,
-                    status=status
-                )
-                db.session.add(new_claim)
-                db.session.commit()
-                return redirect(url_for('index'))
+        if title and console:
+            new_claim = Claim(
+                title=title,
+                console=console,
+                console_icon=console_icon,
+                ra_id=ra_id if ra_id else None,
+                image_icon=image_icon,
+                status=status
+            )
+            db.session.add(new_claim)
+            db.session.commit()
+            return redirect(url_for('index'))
+            
     return render_template('add.html')
 
 if __name__ == "__main__":

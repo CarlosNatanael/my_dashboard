@@ -1,45 +1,57 @@
 {% extends "base.html" %}
 
-{% block title %}Novo Projeto - RA Dashboard{% endblock %}
+{% block title %}Novo Jogo - RA Dashboard{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card bg-secondary text-light">
-            <div class="card-header">
-                <h4>Adicionar Novo Jogo</h4>
+    <div class="col-md-6">
+        <div class="card bg-secondary text-light shadow">
+            <div class="card-header border-0">
+                <h4 class="mb-0">Adicionar Novo Projeto</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-dark">
                 <form method="POST" action="{{ url_for('add_claim') }}">
                     
-                    <div class="mb-3">
-                        <label for="ra_id" class="form-label">ID do RetroAchievements (Opcional)</label>
-                        <input type="number" class="form-control" id="ra_id" name="ra_id" placeholder="Ex: 14402 (ID do Castlevania SotN)">
-                        <div class="form-text text-light opacity-75">Se preencher isso, tentaremos buscar a capa e nome automaticamente.</div>
+                    <div class="mb-4">
+                        <label for="ra_id" class="form-label text-warning fw-bold">ID do RetroAchievements</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-secondary text-light border-secondary">#</span>
+                            <input type="number" class="form-control bg-dark text-light border-secondary" 
+                                   id="ra_id" name="ra_id" placeholder="Ex: 11252" required autofocus>
+                        </div>
+                        <div class="form-text text-light opacity-50">
+                            Digite o ID e nós buscamos a Capa, Título e Console para você.
+                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="title" class="form-label">Título do Jogo</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="Caso não use o ID">
+                    <hr class="border-secondary">
+
+                    <p>
+                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#manualFields">
+                            Preencher manualmente (Caso não tenha ID)
+                        </button>
+                    </p>
+                    <div class="collapse" id="manualFields">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Título</label>
+                            <input type="text" class="form-control bg-dark text-light border-secondary" id="title" name="title">
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="mb-3">
                             <label for="console" class="form-label">Console</label>
-                            <input type="text" class="form-control" id="console" name="console" placeholder="Ex: PS1, SNES">
+                            <input type="text" class="form-control bg-dark text-light border-secondary" id="console" name="console">
                         </div>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="status" class="form-label">Status Inicial</label>
-                        <select class="form-select" name="status">
+                        <select class="form-select bg-dark text-light border-secondary" name="status">
                             <option value="backlog">Ideia / Backlog</option>
-                            <option value="ram_digging">Cavando RAM (Digging)</option>
-                            <option value="coding">Codando Lógica</option>
-                            <option value="badge">Criando Badges</option>
+                            <option value="ram_digging">Cavando RAM</option>
+                            <option value="coding">Codando</option>
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Salvar Projeto</button>
+                    <button type="submit" class="btn btn-primary w-100">Buscar e Salvar</button>
                 </form>
             </div>
         </div>

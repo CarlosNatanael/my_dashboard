@@ -20,16 +20,24 @@
                     {% endif %}
                 </div>
                 <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ claim.title }}</h5>
-                        <span class="badge bg-primary">{{ claim.console }}</span>
-                        <span class="badge bg-warning text-dark">{{ claim.status }}</span>
-                        
-                        <div class="progress mt-3" style="height: 5px;">
-                            <div class="progress-bar" role="progressbar" 
-                                 style="width: {{ claim.progress }}%;"></div>
-                        </div>
+                <div class="card-body">
+                    <h5 class="card-title text-truncate">{{ claim.title }}</h5>
+                    
+                    <div class="d-flex align-items-center mb-2">
+                        {% if claim.console_icon %}
+                            <img src="{{ claim.console_icon }}" alt="{{ claim.console }}" 
+                                 style="width: 24px; height: 24px; object-fit: contain; margin-right: 8px;">
+                        {% endif %}
+                        <span class="badge bg-secondary">{{ claim.console }}</span>
                     </div>
+                
+                    <span class="badge bg-warning text-dark mb-2">{{ claim.status }}</span>
+                    
+                    <div class="progress mt-2" style="height: 5px;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ claim.progress }}%;"></div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
