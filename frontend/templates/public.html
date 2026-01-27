@@ -1,301 +1,234 @@
-<!-- public.html CORRIGIDO -->
 {% extends "base.html" %}
 
-{% block title %}Portfólio - Cnat | RA Developer{% endblock %}
+{% block title %}Welcome to RA Dev Station{% endblock %}
 
-{% block extra_css %}
-<style>
-    /* Hero Section */
-    .hero-section {
-        background: linear-gradient(135deg, rgba(20, 25, 45, 0.9), rgba(40, 20, 60, 0.9));
-        border-radius: 20px;
-        padding: 3rem;
-        margin-bottom: 3rem;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('https://media.retroachievements.org/Images/system/SNES.png') center/cover;
-        opacity: 0.1;
-        z-index: 0;
-    }
-    
-    .hero-content {
-        position: relative;
-        z-index: 1;
-    }
-    
-    .profile-avatar-wrapper {
-        position: relative;
-        display: inline-block;
-    }
-    
-    .profile-avatar {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border: 4px solid var(--accent-blue);
-        padding: 4px;
-        background: var(--bg-dark);
-    }
-    
-    .online-status {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        width: 15px;
-        height: 15px;
-        background-color: #00ff00;
-        border-radius: 50%;
-        border: 2px solid var(--bg-dark);
-    }
-    
-    /* Status Summary */
-    .status-summary {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        margin: 2rem 0;
-    }
-    
-    .stat-card {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 15px;
-        padding: 1.5rem;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-    
-    .stat-card:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateY(-5px);
-    }
-    
-    .stat-number {
-        font-family: var(--font-retro);
-        font-size: 2rem;
-        color: var(--accent-blue);
-        display: block;
-    }
-    
-    /* Game Cards */
-    .game-card {
-        background: rgba(20, 25, 45, 0.8);
-        border: 2px solid transparent;
-        border-image: linear-gradient(45deg, var(--accent-blue), var(--accent-purple)) 1;
-        border-radius: 15px;
-        transition: all 0.3s ease;
-        height: 100%;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .game-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 170, 255, 0.2);
-    }
-    
-    .game-cover {
-        width: 100%;
-        aspect-ratio: 1;
-        object-fit: cover;
-        border-radius: 12px;
-    }
-    
-    /* Section Titles */
-    .section-title {
-        font-family: var(--font-retro);
-        font-size: 1.2rem;
-        color: var(--accent-gold);
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid rgba(255, 204, 0, 0.3);
-    }
-</style>
-{% endblock %}
+{% block header_title %}RA Dev Station{% endblock %}
+{% block header_subtitle %}Home Portal{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="hero-section">
-    <div class="hero-content text-center">
-        <div class="profile-avatar-wrapper mb-3">
-            <img src="https://media.retroachievements.org/UserPic/SrLeo12.png" 
-                 class="profile-avatar" alt="Avatar">
-            <div class="online-status"></div>
-        </div>
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-star"></i> Welcome, Traveler!
+    </div>
+    <div class="welcome-content">
+        <p>Welcome to my RetroAchievements development hub! This is where I organize and track all my achievement development projects.</p>
         
-        <h1 class="retro-font mb-2">Cnat</h1>
-        <p class="text-info font-monospace mb-3">@Junior Developer | RetroAchievements</p>
-        
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-            <a href="https://github.com/CarlosNatanael" class="btn btn-outline-light px-4">
-                <i class="fa-brands fa-github me-2"></i>GitHub
+        <div class="btn-group" style="margin: 20px 0;">
+            <a href="#projects" class="btn btn-warning">
+                <i class="fas fa-gamepad"></i> View Projects
             </a>
-            <a href="https://retroachievements.org/user/Cnat" class="btn btn-warning px-4">
-                <i class="fa-solid fa-trophy me-2"></i>RA Profile
+            <a href="https://retroachievements.org" target="_blank" class="btn">
+                <i class="fas fa-external-link-alt"></i> Visit RA
             </a>
         </div>
     </div>
 </div>
 
-<!-- Stats Summary -->
-<div class="status-summary">
-    <div class="stat-card">
-        <span class="stat-number">{{ active|length }}</span>
-        <span class="text-muted">Em Desenvolvimento</span>
+<!-- Projetos Ativos -->
+<div id="projects" class="block">
+    <div class="block-title">
+        <i class="fas fa-code"></i> Active Development
     </div>
-    <div class="stat-card">
-        <span class="stat-number">{{ finished|length }}</span>
-        <span class="text-muted">Publicados</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-number">{{ future|length }}</span>
-        <span class="text-muted">Na Wishlist</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-number">{{ active|length + finished|length }}</span>
-        <span class="text-muted">Total de Projetos</span>
-    </div>
-</div>
-
-{% if active %}
-<div class="mb-4">
-    <h3 class="section-title">
-        <i class="fa-solid fa-code me-1"></i>Em Desenvolvimento
-    </h3>
-    <div class="row g-3">
+    
+    {% if active %}
+    <div class="projects-grid">
         {% for claim in active %}
-        <div class="col-md-6 col-lg-4">
-            <div class="game-card d-flex">
-                <div style="width: 80px; flex-shrink: 0;">
-                    {% if claim.image_icon %}
-                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                             class="h-100 w-100 object-fit-cover rounded-start">
-                    {% else %}
-                        <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" 
-                             class="h-100 w-100 p-2 opacity-50">
-                    {% endif %}
+        <div class="game-card">
+            <div class="game-card-header">
+                {% if claim.image_icon %}
+                <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                     class="game-icon" alt="{{ claim.title }}">
+                {% else %}
+                <div class="game-icon" style="background: var(--bg-secondary); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-question" style="font-size: 24px; color: var(--text-muted);"></i>
                 </div>
-                
-                <div class="p-2 flex-grow-1">
-                    <h6 class="fw-bold mb-1 text-truncate">{{ claim.title }}</h6>
-                    
-                    <div class="d-flex align-items-center mb-1">
+                {% endif %}
+                <div>
+                    <h3 class="game-title">{{ claim.title }}</h3>
+                    <div class="game-meta">
                         {% if claim.console_icon %}
-                            <img src="{{ claim.console_icon }}" width="14" class="me-1">
+                        <img src="{{ claim.console_icon }}" alt="{{ claim.console }}" width="16" height="16">
                         {% endif %}
-                        <small class="text-muted">{{ claim.console }}</small>
-                    </div>
-
-                    <div class="mb-2">
-                        <span class="badge bg-{{ claim.status_color }} bg-opacity-75">
-                            {{ claim.status_label }}
-                        </span>
-                    </div>
-
-                    <div class="d-flex align-items-center">
-                        <small class="text-muted me-2">{{ claim.progress }}%</small>
-                        <div class="progress flex-grow-1" style="height: 3px;">
-                            <div class="progress-bar" style="width: {{ claim.progress }}%"></div>
-                        </div>
+                        <span>{{ claim.console }}</span>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
-{% if finished %}
-<div class="mb-4">
-    <h3 class="section-title">
-        <i class="fa-solid fa-star me-1"></i>Publicados
-    </h3>
-    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-2">
-        {% for claim in finished %}
-        <div class="col">
-            <a href="https://retroachievements.org/game/{{ claim.ra_id }}" target="_blank" class="text-decoration-none">
-                <div class="game-card text-center p-2 h-100">
-                    {% if claim.image_icon %}
-                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                             class="game-cover mb-1">
-                    {% endif %}
-                    
-                    <div>
-                        <small class="text-white d-block text-truncate">{{ claim.title }}</small>
-                        <small class="text-muted">{{ claim.console }}</small>
-                    </div>
+            
+            <div class="game-status">
+                <span class="status-badge badge-development">{{ claim.status_label }}</span>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: {{ claim.progress }}%"></div>
                 </div>
-            </a>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
-{% if future %}
-<div class="mb-4">
-    <h3 class="section-title text-secondary">
-        <i class="fa-regular fa-bookmark me-1"></i>Lista de Desejos
-    </h3>
-    <div class="d-flex flex-wrap gap-2">
-        {% for claim in future %}
-        <div class="text-center" style="width: 70px;">
-            {% if claim.image_icon %}
-                <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                     class="w-100 rounded mb-1 wishlist-img" 
-                     style="height: 70px; object-fit: cover;">
+                <div style="text-align: right; font-size: 11px; color: var(--text-muted);">
+                    {{ claim.progress }}% Complete
+                </div>
+            </div>
+            
+            {% if claim.notes %}
+            <div class="game-notes" style="margin-top: 10px; padding: 8px; background: rgba(0,0,0,0.2); font-size: 12px;">
+                <strong>Notes:</strong> {{ claim.notes[:100] }}{% if claim.notes|length > 100 %}...{% endif %}
+            </div>
             {% endif %}
-            <small class="text-muted d-block text-truncate">{{ claim.title[:12] }}{% if claim.title|length > 12 %}...{% endif %}</small>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align: center; padding: 20px; color: var(--text-muted);">
+        <i class="fas fa-info-circle"></i> No active projects at the moment.
+    </p>
+    {% endif %}
+</div>
+
+<!-- Projetos Publicados -->
+{% if finished %}
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-trophy"></i> Published Works
+    </div>
+    
+    <div class="published-games">
+        {% for claim in finished %}
+        <a href="https://retroachievements.org/game/{{ claim.ra_id }}" target="_blank" class="published-game">
+            <div class="published-game-inner">
+                {% if claim.image_icon %}
+                <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                     alt="{{ claim.title }}" class="published-game-icon">
+                {% endif %}
+                <div class="published-game-info">
+                    <strong>{{ claim.title }}</strong>
+                    <small>{{ claim.console }}</small>
+                </div>
+                <span class="status-badge badge-published">PUBLISHED</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Wishlist -->
+{% if future %}
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-bookmark"></i> Future Projects (Wishlist)
+    </div>
+    
+    <div class="wishlist">
+        {% for claim in future %}
+        <div class="wishlist-item">
+            <span class="status-badge badge-wishlist">WISHLIST</span>
+            <strong>{{ claim.title }}</strong>
+            <small>({{ claim.console }})</small>
         </div>
         {% endfor %}
     </div>
 </div>
 {% endif %}
 
+<!-- Guestbook (fake) -->
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-book"></i> Developer Log
+    </div>
+    
+    <div class="guestbook-entries">
+        <div class="guestbook-entry">
+            <div class="entry-header">
+                <strong>Cnat</strong> - <span class="entry-date">Today</span>
+            </div>
+            <div class="entry-content">
+                Working on new achievements for classic titles. Stay tuned!
+            </div>
+        </div>
+        
+        <div class="guestbook-entry">
+            <div class="entry-header">
+                <strong>System</strong> - <span class="entry-date">Yesterday</span>
+            </div>
+            <div class="entry-content">
+                Website updated to v1.0. Added new project tracking features.
+            </div>
+        </div>
+    </div>
+    
+</div>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-    // Adicionar efeito de hover nas imagens da wishlist
-    document.addEventListener('DOMContentLoaded', function() {
-        const wishlistImages = document.querySelectorAll('.wishlist-img');
-        wishlistImages.forEach(img => {
-            img.parentElement.addEventListener('mouseenter', function() {
-                img.style.filter = 'grayscale(0%) opacity(1)';
-                img.style.transform = 'scale(1.05)';
-            });
-            img.parentElement.addEventListener('mouseleave', function() {
-                img.style.filter = 'grayscale(100%) opacity(0.6)';
-                img.style.transform = 'scale(1)';
-            });
-        });
-        
-        // Animar cards ao entrar na viewport
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.game-card').forEach(card => {
-            observer.observe(card);
-        });
-    });
-</script>
+{% block extra_css %}
+<style>
+    .projects-grid {
+        display: grid;
+        gap: 20px;
+    }
+    
+    .published-games {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .published-game {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        border: 2px solid var(--border-color);
+        padding: 10px;
+        transition: all 0.3s;
+    }
+    
+    .published-game:hover {
+        border-color: var(--accent-gold);
+        transform: translateY(-3px);
+    }
+    
+    .published-game-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .published-game-icon {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        margin-bottom: 10px;
+        border: 2px solid var(--accent-gold);
+    }
+    
+    .wishlist {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .wishlist-item {
+        background: rgba(255,255,255,0.05);
+        padding: 10px;
+        border: 1px dashed var(--border-color);
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    .guestbook-entries {
+        margin-top: 15px;
+    }
+    
+    .guestbook-entry {
+        background: rgba(255,255,255,0.05);
+        padding: 10px;
+        margin-bottom: 10px;
+        border-left: 3px solid var(--accent-teal);
+    }
+    
+    .entry-header {
+        color: var(--accent-gold);
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+    
+    .entry-content {
+        font-size: 13px;
+    }
+</style>
 {% endblock %}

@@ -1,101 +1,144 @@
 {% extends "base.html" %}
 
-{% block title %}Dev Console Login{% endblock %}
+{% block title %}Login - RA Dev Station{% endblock %}
+
+{% block header_title %}Secure Login{% endblock %}
+{% block header_subtitle %}Developer Access Required{% endblock %}
 
 {% block extra_css %}
 <style>
     .login-container {
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .login-card {
-        background: rgba(20, 25, 45, 0.95);
-        border: 2px solid transparent;
-        border-image: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0) 1;
-        border-radius: 20px;
-        padding: 3rem;
-        width: 100%;
         max-width: 400px;
-        backdrop-filter: blur(20px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        margin: 0 auto;
+        padding: 30px;
     }
     
-    .login-header {
+    .login-box {
+        background: var(--bg-card);
+        border: 4px double var(--accent-gold);
+        padding: 30px;
+        box-shadow: var(--shadow);
+        position: relative;
+    }
+    
+    .login-box::before {
+        content: '🔒';
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--bg-primary);
+        padding: 0 15px;
+        font-size: 24px;
+    }
+    
+    .login-title {
         text-align: center;
-        margin-bottom: 2rem;
+        color: var(--accent-teal);
+        margin-bottom: 25px;
+        font-family: var(--font-heading);
+        border-bottom: 2px solid var(--accent-pink);
+        padding-bottom: 10px;
     }
     
-    .login-header i {
-        font-size: 3rem;
-        color: var(--accent-blue);
-        margin-bottom: 1rem;
-        text-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+    .form-group {
+        margin-bottom: 20px;
     }
     
-    .form-control {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        color: white !important;
-        padding: 0.75rem 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    .form-control:focus {
-        border-color: var(--accent-blue);
-        box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.2);
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--accent-gold);
+        font-weight: bold;
+        font-family: var(--font-retro);
+        font-size: 12px;
+        text-transform: uppercase;
     }
     
     .login-btn {
-        background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-        border: none;
-        padding: 0.75rem;
-        font-family: var(--font-retro);
-        letter-spacing: 1px;
-        text-transform: uppercase;
         width: 100%;
-        margin-top: 1rem;
+        padding: 12px;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+    
+    .login-links {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .login-links a {
+        color: var(--accent-teal);
+        text-decoration: none;
+        margin: 0 10px;
+        font-size: 12px;
+    }
+    
+    .login-links a:hover {
+        text-decoration: underline;
+    }
+    
+    .security-notice {
+        background: rgba(255,0,0,0.1);
+        border: 1px solid red;
+        padding: 10px;
+        margin-top: 20px;
+        font-size: 11px;
+        color: #ff9999;
+        text-align: center;
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="login-container">
-    <div class="login-card">
-        <div class="login-header">
-            <i class="fa-solid fa-lock"></i>
-            <h3 class="retro-font">DEV CONSOLE</h3>
-            <p class="text-muted">Acesso Restrito ao Desenvolvedor</p>
-        </div>
+    <div class="login-box">
+        <h2 class="login-title">Developer Login</h2>
         
-        <form method="POST">
-            <div class="mb-3">
-                <label class="form-label text-info">
-                    <i class="fa-solid fa-user me-1"></i>Username
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-user"></i> Username
                 </label>
-                <input type="text" name="username" class="form-control" 
-                       placeholder="dev_user" required autofocus>
+                <input type="text" 
+                       name="username" 
+                       class="form-control" 
+                       required 
+                       autofocus
+                       placeholder="Enter developer username">
             </div>
             
-            <div class="mb-4">
-                <label class="form-label text-info">
-                    <i class="fa-solid fa-key me-1"></i>Password
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-key"></i> Password
                 </label>
-                <input type="password" name="password" class="form-control" 
-                       placeholder="••••••••" required>
+                <input type="password" 
+                       name="password" 
+                       class="form-control" 
+                       required
+                       placeholder="Enter password">
             </div>
-
+            
             <button type="submit" class="btn login-btn">
-                <i class="fa-solid fa-terminal me-2"></i>Acessar Sistema
+                <i class="fas fa-sign-in-alt"></i> Access Dev Console
             </button>
         </form>
         
-        <div class="text-center mt-4">
-            <a href="{{ url_for('index') }}" class="text-muted small">
-                <i class="fa-solid fa-arrow-left me-1"></i>Voltar ao portfólio público
+        <div class="login-links">
+            <a href="{{ url_for('index') }}">
+                <i class="fas fa-home"></i> Back to Home
             </a>
+            |
+            <a href="https://retroachievements.org" target="_blank">
+                <i class="fas fa-question-circle"></i> Forgot Password?
+            </a>
+        </div>
+        
+        <div class="security-notice">
+            <i class="fas fa-shield-alt"></i>
+            This area is restricted to authorized developers only.
         </div>
     </div>
 </div>

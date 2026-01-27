@@ -1,178 +1,278 @@
 {% extends "base.html" %}
 
-{% block title %}Dev Console - RA Dashboard{% endblock %}
+{% block title %}Dev Console - RA Dev Station{% endblock %}
+
+{% block header_title %}Dev Console{% endblock %}
+{% block header_subtitle %}Developer Control Panel{% endblock %}
+
+{% block extra_css %}
+<style>
+    .console-header {
+        background: black;
+        color: lime;
+        font-family: 'Courier New', monospace;
+        padding: 10px;
+        border: 2px solid var(--accent-teal);
+        margin-bottom: 20px;
+    }
+    
+    .console-output {
+        background: rgba(0,0,0,0.8);
+        color: #0f0;
+        font-family: 'Courier New', monospace;
+        padding: 15px;
+        border: 1px solid var(--accent-teal);
+        height: 200px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        font-size: 12px;
+    }
+    
+    .console-input {
+        width: 100%;
+        background: black;
+        color: lime;
+        border: 1px solid var(--accent-teal);
+        padding: 10px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+    }
+    
+    .stat-box {
+        background: var(--bg-secondary);
+        padding: 15px;
+        text-align: center;
+        border: 2px solid var(--border-color);
+    }
+    
+    .stat-number {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--accent-gold);
+        display: block;
+    }
+    
+    .stat-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+    }
+    
+    .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+    }
+    
+    .action-btn {
+        flex: 1;
+        min-width: 120px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <!-- Sidebar -->
-    <div class="col-md-3">
-        {% include 'sidebar.html' %}
+<!-- Console Terminal -->
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-terminal"></i> System Console
     </div>
     
-    <!-- Main Content -->
-    <div class="col-md-9">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="retro-font">Meus Projetos</h2>
-            <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#filterModal">
-                    <i class="fa-solid fa-filter"></i> Filtrar
-                </button>
-                <button class="btn btn-sm btn-outline-warning" id="exportBtn">
-                    <i class="fa-solid fa-download"></i> Exportar
-                </button>
-            </div>
+    <div class="console-output" id="consoleOutput">
+        <div>RA Dev Station v1.0 - Developer Console</div>
+        <div>System initialized...</div>
+        <div>Loading project data...</div>
+        <div>> Found {{ claims|length }} projects in database</div>
+        <div>> User: {{ current_user.username if current_user else 'Guest' }}</div>
+        <div>> Session started: {{ current_time.strftime('%Y-%m-%d %H:%M:%S') if current_time else 'N/A' }}</div>
+        <div>> Type 'help' for commands</div>
+    </div>
+    
+    <div class="console-input-container">
+        <input type="text" class="console-input" placeholder="> Enter command..." id="consoleInput" 
+               onkeypress="if(event.key === 'Enter') handleConsoleCommand()">
+    </div>
+</div>
+
+<!-- Quick Stats -->
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-chart-pie"></i> Project Statistics
+    </div>
+    
+    <div class="stats-grid">
+        {% set status_groups = {} %}
+        {% for claim in claims %}
+            {% set status_groups = status_groups.update({claim.status: status_groups.get(claim.status, 0) + 1}) or status_groups %}
+        {% endfor %}
+        
+        <div class="stat-box">
+            <span class="stat-number">{{ claims|length }}</span>
+            <span class="stat-label">Total Projects</span>
         </div>
         
-        <!-- Status Quick View -->
-        <div class="row mb-4">
-            {% for status_code, status_info in [
-                ('wishlist', ('wishlist', 'secondary')),
-                ('claim', ('claim', 'info')),
-                ('ram', ('ram', 'primary')),
-                ('published', ('published', 'success')),
-                ('tickets', ('tickets', 'danger'))
-            ] %}
-            {% set count = claims|selectattr('status', 'eq', status_code)|list|length %}
-            {% if count > 0 %}
-            <div class="col-auto">
-                <div class="quick-stat bg-{{ status_info[1] }} bg-opacity-25 p-2 rounded">
-                    <small class="d-block">{{ count }}</small>
-                    <small class="text-muted">{{ status_code }}</small>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
+        <div class="stat-box">
+            <span class="stat-number">{{ claims|selectattr('status', 'eq', 'published')|list|length }}</span>
+            <span class="stat-label">Published</span>
         </div>
         
-        <!-- Grid de Projetos -->
-        <div class="row g-3" id="projectsGrid">
-            {% for claim in claims %}
-            <div class="col-lg-4 col-md-6 fade-in-up" data-status="{{ claim.status }}">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <div class="d-flex align-items-center">
-                                {% if claim.console_icon %}
-                                <img src="{{ claim.console_icon }}" 
-                                     class="me-2" width="24" height="24"
-                                     data-bs-toggle="tooltip" 
-                                     title="{{ claim.console }}">
-                                {% endif %}
-                                <span class="badge bg-{{ claim.status_color }}">
-                                    {{ claim.status_label }}
-                                </span>
-                            </div>
-                            <small class="text-muted">
-                                #{{ claim.id }}
-                            </small>
-                        </div>
-                        
-                        <div class="text-center mb-3">
-                            {% if claim.image_icon %}
-                            <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                                 class="game-icon rounded"
-                                 style="max-width: 100px; height: auto;"
-                                 data-bs-toggle="modal" 
-                                 data-bs-target="#imageModal{{ claim.id }}">
-                            {% endif %}
-                        </div>
-                        
-                        <h6 class="card-title mb-1">{{ claim.title }}</h6>
-                        
-                        <div class="progress-container mb-3">
-                            <div class="d-flex justify-content-between mb-1">
-                                <small class="text-muted">Progresso</small>
-                                <small class="fw-bold">{{ claim.progress }}%</small>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: {{ claim.progress }}%"></div>
-                            </div>
-                        </div>
-                        
-                        {% if claim.notes %}
-                        <div class="notes-preview mb-3">
-                            <small class="text-muted">Últimas anotações:</small>
-                            <p class="small mb-0 text-truncate">{{ claim.notes[:50] }}...</p>
-                        </div>
-                        {% endif %}
-                        
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">
-                                <i class="fa-solid fa-clock me-1"></i>
-                                {{ claim.updated_at.strftime('%d/%m') if claim.updated_at else '' }}
-                            </small>
-                            <a href="{{ url_for('edit_claim', id=claim.id) }}" 
-                               class="btn btn-sm btn-outline-light">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                        </div>
+        <div class="stat-box">
+            <span class="stat-number">{{ claims|selectattr('status', 'ne', 'published')|selectattr('status', 'ne', 'wishlist')|list|length }}</span>
+            <span class="stat-label">In Development</span>
+        </div>
+        
+        <div class="stat-box">
+            <span class="stat-number">{{ claims|selectattr('status', 'eq', 'wishlist')|list|length }}</span>
+            <span class="stat-label">Wishlist</span>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-bolt"></i> Quick Actions
+    </div>
+    
+    <div class="quick-actions">
+        <a href="{{ url_for('add_claim') }}" class="btn action-btn">
+            <i class="fas fa-plus"></i> New Project
+        </a>
+        
+        <a href="{{ url_for('index') }}" class="btn action-btn">
+            <i class="fas fa-eye"></i> View Public
+        </a>
+        
+        <button class="btn action-btn" onclick="exportData()">
+            <i class="fas fa-download"></i> Export Data
+        </button>
+        
+        <button class="btn action-btn" onclick="refreshData()">
+            <i class="fas fa-sync"></i> Refresh
+        </button>
+    </div>
+</div>
+
+<!-- Project List -->
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-list"></i> All Projects ({{ claims|length }})
+    </div>
+    
+    {% if claims %}
+    <div class="project-list">
+        {% for claim in claims %}
+        <div class="game-card" style="margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="flex: 1;">
+                    <h4 style="margin: 0 0 5px 0;">
+                        {{ claim.title }}
+                        <small style="color: var(--text-muted);">({{ claim.console }})</small>
+                    </h4>
+                    <div>
+                        <span class="status-badge badge-{{ claim.status }}">
+                            {{ claim.status_label }}
+                        </span>
+                        <span style="font-size: 11px; color: var(--text-muted); margin-left: 10px;">
+                            Updated: {{ claim.updated_at.strftime('%Y-%m-%d') if claim.updated_at else 'N/A' }}
+                        </span>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
-<!-- Modal de Filtro -->
-<div class="modal fade" id="filterModal">
-    <div class="modal-dialog">
-        <div class="modal-content bg-dark">
-            <div class="modal-header">
-                <h5 class="modal-title">Filtrar Projetos</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" value="all" id="filterAll" checked>
-                    <label class="form-check-label" for="filterAll">Todos os projetos</label>
+                
+                <div style="text-align: right;">
+                    <div class="progress-container" style="width: 150px; margin-bottom: 5px;">
+                        <div class="progress-bar" style="width: {{ claim.progress }}%"></div>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-muted);">
+                        {{ claim.progress }}% Complete
+                    </div>
                 </div>
-                {% for status in ['wishlist', 'claim', 'published', 'tickets'] %}
-                <div class="form-check mb-2">
-                    <input class="form-check-input filter-option" type="checkbox" value="{{ status }}" id="filter{{ status }}">
-                    <label class="form-check-label" for="filter{{ status }}">{{ status }}</label>
+                
+                <div style="margin-left: 20px;">
+                    <a href="{{ url_for('edit_claim', id=claim.id) }}" class="btn" style="padding: 5px 10px; font-size: 12px;">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
                 </div>
-                {% endfor %}
             </div>
+            
+            {% if claim.notes %}
+            <div style="margin-top: 10px; padding: 8px; background: rgba(0,0,0,0.2); font-size: 12px; border-left: 3px solid var(--accent-pink);">
+                <strong>Notes:</strong> {{ claim.notes[:200] }}{% if claim.notes|length > 200 %}...{% endif %}
+            </div>
+            {% endif %}
         </div>
+        {% endfor %}
     </div>
+    {% else %}
+    <p style="text-align: center; padding: 30px; color: var(--text-muted);">
+        <i class="fas fa-folder-open fa-2x" style="margin-bottom: 10px; display: block;"></i>
+        No projects found. <a href="{{ url_for('add_claim') }}">Create your first project!</a>
+    </p>
+    {% endif %}
 </div>
-
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    // Filtro de projetos
-    document.querySelectorAll('.filter-option').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const selectedStatus = Array.from(document.querySelectorAll('.filter-option:checked'))
-                .map(cb => cb.value);
-            
-            document.querySelectorAll('#projectsGrid > div').forEach(project => {
-                const status = project.dataset.status;
-                if (selectedStatus.length === 0 || selectedStatus.includes(status)) {
-                    project.style.display = 'block';
-                } else {
-                    project.style.display = 'none';
-                }
-            });
-        });
-    });
+    // Console simulation
+    function handleConsoleCommand() {
+        const input = document.getElementById('consoleInput');
+        const output = document.getElementById('consoleOutput');
+        const command = input.value.toLowerCase();
+        
+        // Add command to output
+        output.innerHTML += `<div>> ${input.value}</div>`;
+        
+        // Handle commands
+        let response = '';
+        switch(command) {
+            case 'help':
+                response = 'Available commands: help, clear, stats, refresh, export';
+                break;
+            case 'clear':
+                output.innerHTML = '<div>RA Dev Station v1.0 - Developer Console</div>';
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+                return;
+            case 'stats':
+                response = `Projects: ${ {{ claims|length }} }, Published: ${ {{ claims|selectattr('status', 'eq', 'published')|list|length }} }, Active: ${ {{ claims|selectattr('status', 'ne', 'published')|selectattr('status', 'ne', 'wishlist')|list|length }} }`;
+                break;
+            case 'refresh':
+                response = 'Refreshing data...';
+                setTimeout(() => { location.reload(); }, 1000);
+                break;
+            case 'export':
+                exportData();
+                response = 'Exporting data...';
+                break;
+            default:
+                response = `Unknown command: ${command}. Type 'help' for available commands.`;
+        }
+        
+        // Add response to output
+        output.innerHTML += `<div>${response}</div>`;
+        input.value = '';
+        output.scrollTop = output.scrollHeight;
+    }
     
-    // Tooltips
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    
-    // Exportar dados
-    document.getElementById('exportBtn').addEventListener('click', function() {
+    // Export data
+    function exportData() {
         const data = {
             timestamp: new Date().toISOString(),
             projects: {{ claims|length }},
+            user: '{{ current_user.username if current_user else "anonymous" }}',
             stats: {
-                active: {{ claims|selectattr('status', 'ne', 'published')|list|length }},
-                published: {{ claims|selectattr('status', 'eq', 'published')|list|length }}
+                total: {{ claims|length }},
+                published: {{ claims|selectattr('status', 'eq', 'published')|list|length }},
+                active: {{ claims|selectattr('status', 'ne', 'published')|selectattr('status', 'ne', 'wishlist')|list|length }},
+                wishlist: {{ claims|selectattr('status', 'eq', 'wishlist')|list|length }}
             }
         };
         
@@ -180,11 +280,25 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `ra_dashboard_export_${new Date().toISOString().split('T')[0]}.json`;
+        a.download = `ra_devstation_export_${new Date().toISOString().split('T')[0]}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    }
+    
+    // Refresh data
+    function refreshData() {
+        document.getElementById('consoleOutput').innerHTML += '<div>> Refreshing data...</div>';
+        setTimeout(() => { location.reload(); }, 500);
+    }
+    
+    // Auto-focus console input
+    document.addEventListener('DOMContentLoaded', function() {
+        const consoleInput = document.getElementById('consoleInput');
+        if (consoleInput) {
+            consoleInput.focus();
+        }
     });
 </script>
 {% endblock %}
