@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Editar - {{ claim.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card bg-dark border-secondary text-light">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Fluxo de Desenvolvimento</h4>
+                <form method="POST" onsubmit="return confirm('Tem certeza que quer apagar este projeto?');">
+                    <button type="submit" name="delete" value="true" class="btn btn-outline-danger btn-sm">Excluir</button>
+                </form>
+            </div>
+            
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    {% if claim.image_icon %}
+                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                             class="rounded shadow" style="max-width: 150px;">
+                    {% endif %}
+                    <h3 class="mt-2">{{ claim.title }}</h3>
+                    <div class="d-flex justify-content-center align-items-center gap-2">
+                        {% if claim.console_icon %}
+                            <img src="{{ claim.console_icon }}" width="20">
+                        {% endif %}
+                        <span class="text-muted">{{ claim.console }}</span>
+                    </div>
+                </div>
+
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <label class="form-label text-warning">Status do Roteiro</label>
+                            <select class="form-select bg-secondary text-light border-0 p-3" name="status" style="font-size: 1.1em;">
+                                
+                                <optgroup label="1. Início">
+                                    <option value="claim" {% if claim.status == 'claim' %}selected{% endif %}>📍 Adicionado a Claim</option>
+                                    <option value="ram" {% if claim.status == 'ram' %}selected{% endif %}>🔍 Cavando/Inspecionando RAM</option>
+                                </optgroup>
+
+                                <optgroup label="2. Desenvolvimento">
+                                    <option value="logic" {% if claim.status == 'logic' %}selected{% endif %}>💻 Desenvolvendo Achievements</option>
+                                    <option value="badge" {% if claim.status == 'badge' %}selected{% endif %}>🎨 Desenvolvendo Badges/Ícones</option>
+                                </optgroup>
+
+                                <optgroup label="3. Apoio & Equipes">
+                                    <option value="writing" {% if claim.status == 'writing' %}selected{% endif %}>📝 Aguardando Revisão de Escrita</option>
+                                    <option value="art_team" {% if claim.status == 'art_team' %}selected{% endif %}>🖌️ Aguardando Equipe de Arte</option>
+                                    <option value="playtest" {% if claim.status == 'playtest' %}selected{% endif %}>🎮 Enviado p/ Player-Tester</option>
+                                </optgroup>
+
+                                <optgroup label="4. Testes">
+                                    <option value="testing" {% if claim.status == 'testing' %}selected{% endif %}>🕹️ Testando Achievements (Local)</option>
+                                    <option value="pre_release" {% if claim.status == 'pre_release' %}selected{% endif %}>🚀 Últimos testes antes do lançamento</option>
+                                </optgroup>
+
+                                <optgroup label="5. Finalizado / Manutenção">
+                                    <option value="published" {% if claim.status == 'published' %}selected{% endif %}>🏆 Publicado</option>
+                                    <option value="tickets" {% if claim.status == 'tickets' %}selected{% endif %}>🎫 Atendendo Tickets</option>
+                                    <option value="revision" {% if claim.status == 'revision' %}selected{% endif %}>🔧 Revisão de Conjunto (Bugfix)</option>
+                                </optgroup>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Título Personalizado (Opcional)</label>
+                            <input type="text" class="form-control bg-secondary text-light border-0" name="title" value="{{ claim.title }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Progresso: <span id="valBox" class="fw-bold text-info">{{ claim.progress }}</span>%</label>
+                        <input type="range" class="form-range" name="progress" min="0" max="100" value="{{ claim.progress }}" 
+                               oninput="document.getElementById('valBox').innerText = this.value">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Caderno de Notas (Endereços, Ideias, Log)</label>
+                        <textarea class="form-control bg-secondary text-light border-0 font-monospace" name="notes" rows="8" 
+                                  placeholder="0x0012ab: Vida do Boss&#10;0xcafe00: Flag de Conclusão...">{{ claim.notes }}</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">Salvar Atualização</button>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-light">Voltar ao Painel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

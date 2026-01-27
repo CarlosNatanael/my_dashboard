@@ -22,7 +22,7 @@
                 <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title text-truncate">{{ claim.title }}</h5>
-                    
+
                     <div class="d-flex align-items-center mb-2">
                         {% if claim.console_icon %}
                             <img src="{{ claim.console_icon }}" alt="{{ claim.console }}" 
@@ -31,12 +31,21 @@
                         <span class="badge bg-secondary">{{ claim.console }}</span>
                     </div>
                 
-                    <span class="badge bg-warning text-dark mb-2">{{ claim.status }}</span>
-                    
+                    <span class="badge bg-{{ claim.status_color }} text-dark mb-2">
+                        {{ claim.status_label }}
+                    </span>
+
                     <div class="progress mt-2" style="height: 5px;">
                         <div class="progress-bar" role="progressbar" 
                              style="width: {{ claim.progress }}%;"></div>
                     </div>
+                    <div class="progress mt-2 mb-3" style="height: 5px;">
+                        <div class="progress-bar" role="progressbar" style="width: {{ claim.progress }}%;"></div>
+                    </div>
+
+                    <a href="{{ url_for('edit_claim', id=claim.id) }}" class="btn btn-sm btn-outline-light w-100 stretched-link">
+                        Gerenciar / Atualizar
+                    </a>
                 </div>
                 </div>
             </div>

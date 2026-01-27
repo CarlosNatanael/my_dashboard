@@ -95,5 +95,25 @@ def add_claim():
             
     return render_template('add.html')
 
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit_claim(id):
+    claim = Claim.query.get_or_404(id)
+
+    if request.method == 'POST':
+        if 'delete' in request.form:
+            db.session.delete(claim)
+            db.session.commit()
+            return redirect(url_for('index'))
+
+        claim.title = request.form.get('title')
+        claim.status = request.form.get('status')
+        claim.progress = request.form.get('progress')
+        claim.notes = request.form.get('notes')
+        
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    return render_template('edit.html', claim=claim)
+
 if __name__ == "__main__":
     app.run(debug=True)
