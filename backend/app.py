@@ -56,19 +56,19 @@ def get_ra_game_info(game_id):
 def index():
     all_claims = Claim.query.order_by(Claim.updated_at.desc()).all()
     active = [c for c in all_claims if c.status not in ['published', 'wishlist', 'jr_plan_wait', 'jr_queue']]
-    return render_template('public.html', active=active)
+    return render_template('public.html', active=active, claims=all_claims)
 
 @app.route('/future')
 def future():
     all_claims = Claim.query.order_by(Claim.title).all()
     future_projects = [c for c in all_claims if c.status in ['wishlist', 'jr_plan_review', 'jr_plan_wait']]
-    return render_template('public_future.html', future=future_projects)
+    return render_template('public_future.html', future=future_projects, claims=all_claims)
 
 @app.route('/published')
 def published():
-    all_claims = Claim.query.order_by(Claim.updated_at.desc()).all() # Ordena por data de conclusão
+    all_claims = Claim.query.order_by(Claim.updated_at.desc()).all() 
     finished = [c for c in all_claims if c.status == 'published']
-    return render_template('public_published.html', finished=finished)
+    return render_template('public_published.html', finished=finished, claims=all_claims)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

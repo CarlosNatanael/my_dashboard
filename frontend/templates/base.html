@@ -7,142 +7,149 @@
     <meta name="keywords" content="retroachievements, retro, achievements, developer, dashboard">
     <title>{% block title %}RA Dev Station{% endblock %}</title>
     
-    <!-- Estilos principais -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     
-    <!-- Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Fonte retro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
     
-    <!-- Favicon RA -->
     <link rel="icon" href="https://static.retroachievements.org/assets/images/favicon.webp">
     
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Efeito scanlines -->
     <div class="scanlines"></div>
-    
-    <!-- Marca d'água -->
     <div class="watermark">RA DEV STATION v1.0</div>
 
-    <!-- Cabeçalho -->
-    <header class="site-header">
-        <div class="header-content">
-            <h1 class="site-title">{% block header_title %}RA Dev Station{% endblock %}</h1>
-            <p class="site-subtitle">{% block header_subtitle %}RetroAchievements Developer Dashboard{% endblock %}</p>
-            
-            {% if current_user.is_authenticated %}
-            <div class="user-info">
-                <span class="btn btn-success">
-                    <i class="fas fa-user"></i> {{ current_user.username }}
-                </span>
-                <a href="{{ url_for('logout') }}" class="btn btn-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </div>
-            {% endif %}
-        </div>
-    </header>
+    <div class="layout-wrapper">
 
-    <!-- Container principal -->
-    <div class="main-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="block">
-                <div class="block-title">
-                    <i class="fas fa-bars"></i> Navigation
-                </div>
-                <ul class="nav-links">
-                    <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">
-                        <i class="fas fa-home"></i> Home Portal
-                    </a></li>
-
-                    <li><a href="{{ url_for('future') }}" class="{% if request.endpoint == 'future' %}active{% endif %}">
-                        <i class="fas fa-hourglass-half"></i> Wishlist
-                    </a></li>
+        <header class="site-header">
+            <div class="header-content">
+                <h1 class="site-title">{% block header_title %}RA Dev Station{% endblock %}</h1>
+                <p class="site-subtitle">{% block header_subtitle %}RetroAchievements Developer Dashboard{% endblock %}</p>
                 
-                    <li><a href="{{ url_for('published') }}" class="{% if request.endpoint == 'published' %}active{% endif %}">
-                        <i class="fas fa-trophy"></i> Published
-                    </a></li>
-                    
-                    {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
-                        <i class="fas fa-terminal"></i> Dev Console
-                    </a></li>
-                    <li><a href="{{ url_for('add_claim') }}" class="{% if request.endpoint == 'add_claim' %}active{% endif %}">
-                        <i class="fas fa-plus-circle"></i> New Project
-                    </a></li>
-                    <li><a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">
-                        <i class="fas fa-lock"></i> Login
-                    </a></li>
-                    {% endif %}
-                    
-                    <li><a href="https://retroachievements.org" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" alt="RA" width="30" height="19"></a>
-                    </a></li>
-                    <li><a href="https://github.com" target="_blank">
-                        <i class="fab fa-github"></i> GitHub
-                    </a></li>
-                </ul>
-            </div>
-
-            <div class="block">
-                <div class="block-title">
-                    <i class="fas fa-chart-bar"></i> Quick Stats
+                {% if current_user.is_authenticated %}
+                <div class="user-info">
+                    <span class="btn btn-success">
+                        <i class="fas fa-user"></i> {{ current_user.username }}
+                    </span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </div>
-                <div class="stats">
-                    {% if claims %}
-                    {% set active = claims|selectattr('status', 'ne', 'published')|selectattr('status', 'ne', 'wishlist')|list %}
-                    {% set published = claims|selectattr('status', 'eq', 'published')|list %}
-                    <p>Active: <strong>{{ active|length }}</strong></p>
-                    <p>Published: <strong>{{ published|length }}</strong></p>
-                    <p>Total: <strong>{{ claims|length }}</strong></p>
-                    {% else %}
-                    <p>Loading stats...</p>
-                    {% endif %}
-                </div>
-            </div>
-        </aside>
-
-        <!-- Área de conteúdo principal -->
-        <main class="content-area">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="block" style="background: var(--accent-teal); color: var(--bg-primary);">
-                        <strong>System Message:</strong> {{ message }}
-                    </div>
-                    {% endfor %}
                 {% endif %}
-            {% endwith %}
+            </div>
+        </header>
 
-            {% block content %}
-            <!-- Conteúdo das páginas vai aqui -->
-            {% endblock %}
-        </main>
-    </div>
+        <div class="main-container">
+            <aside class="sidebar">
+                <div class="block">
+                    <div class="block-title">
+                        <i class="fas fa-bars"></i> Navigation
+                    </div>
+                    <ul class="nav-links">
+                        <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">
+                            <i class="fas fa-home"></i> Home Portal
+                        </a></li>
 
-    <!-- Rodapé -->
-    <footer class="site-footer">
-        <div class="footer-content block">
-            <p>
-                <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" alt="RA" width="16" height="16">
-                <strong>RA Dev Station</strong>
-            </p>
-            <p>
-                © 2025 RetroAchievements Junior Developer
-            </p>
+                        <li><a href="{{ url_for('future') }}" class="{% if request.endpoint == 'future' %}active{% endif %}">
+                            <i class="fas fa-hourglass-half"></i> Wishlist
+                        </a></li>
+                    
+                        <li><a href="{{ url_for('published') }}" class="{% if request.endpoint == 'published' %}active{% endif %}">
+                            <i class="fas fa-trophy"></i> Published
+                        </a></li>
+                        
+                        {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                            <i class="fas fa-terminal"></i> Dev Console
+                        </a></li>
+                        <li><a href="{{ url_for('add_claim') }}" class="{% if request.endpoint == 'add_claim' %}active{% endif %}">
+                            <i class="fas fa-plus-circle"></i> New Project
+                        </a></li>
+                        <li><a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">
+                            <i class="fas fa-lock"></i> Login
+                        </a></li>
+                        {% endif %}
+                        
+                        <li><a href="https://retroachievements.org" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" alt="RA" width="30" height="19"></a>
+                        </a></li>
+                    </ul>
+                </div>
+
+                <div class="block">
+                    <div class="block-title">
+                        <i class="fas fa-chart-bar"></i> Quick Stats
+                    </div>
+                    <div class="stats">
+                        {% if claims %}
+                        {% set active = claims|selectattr('status', 'ne', 'published')|selectattr('status', 'ne', 'wishlist')|list %}
+                        {% set published = claims|selectattr('status', 'eq', 'published')|list %}
+                        <p>Active: <strong>{{ active|length }}</strong></p>
+                        <p>Published: <strong>{{ published|length }}</strong></p>
+                        <p>Total: <strong>{{ claims|length }}</strong></p>
+                        {% else %}
+                        <p>Loading stats...</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="block profile-block">
+                    <div class="block-title">
+                        <i class="fas fa-id-badge"></i>Jr-Dev
+                    </div>
+                    
+                    <div style="text-align: center; padding: 10px;">
+                        <div class="profile-frame">
+                            <img src="https://media.retroachievements.org/UserPic/SrLeo12.png" alt="Dev Profile" class="profile-img">
+                        </div>
+                    
+                        <h4 class="profile-name">Cnat</h4>
+                    
+                        <div class="profile-social">
+                            <a href="https://github.com/CarlosNatanael" target="_blank" title="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://retroachievements.org/user/Cnat" target="_blank" title="RA Profile">
+                                <i class="fas fa-trophy"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+
+            <main class="content-area">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="block" style="background: var(--accent-teal); color: var(--bg-primary);">
+                            <strong>System Message:</strong> {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}
+                {% endblock %}
+            </main>
         </div>
-    </footer>
 
-    <!-- Scripts -->
+        <footer class="site-footer">
+            <div class="footer-content block">
+                <p>
+                    <img src="https://static.retroachievements.org/assets/images/ra-icon.webp" alt="RA" width="16" height="16">
+                    <strong>RA Dev Station</strong>
+                </p>
+                <p>
+                    © 2025 Junior Developer
+                </p>
+            </div>
+        </footer>
+
+    </div> 
     <script>
-        // Efeitos retro
         document.addEventListener('DOMContentLoaded', function() {
-            // Adiciona efeito de digitação nos títulos
             const titles = document.querySelectorAll('.site-title, .block-title');
             titles.forEach(title => {
                 const text = title.textContent;
@@ -158,7 +165,6 @@
                 typeWriter();
             });
 
-            // Efeito de piscar para elementos importantes
             setInterval(() => {
                 const blinkers = document.querySelectorAll('.blink');
                 blinkers.forEach(el => {
@@ -167,21 +173,6 @@
             }, 1000);
         });
 
-
-    const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-    let kPosition = 0;
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === konamiCode[kPosition]) {
-            kPosition++;
-            if (kPosition === konamiCode.length) {
-                alert('🕵️ MODO DEV DESBLOQUEADO: Vidas Infinitas!'); // Ou redirecionar para /login
-                kPosition = 0;
-            }
-        } else {
-            kPosition = 0;
-        }
-    });
     </script>
     
     {% block extra_js %}{% endblock %}

@@ -3,105 +3,82 @@
 {% block title %}Editar - {{ claim.title }}{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card bg-dark border-secondary text-light">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Fluxo de Desenvolvimento</h4>
-                <form method="POST" onsubmit="return confirm('Tem certeza que quer apagar este projeto?');">
-                    <button type="submit" name="delete" value="true" class="btn btn-outline-danger btn-sm">Excluir</button>
-                </form>
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-edit"></i> Editando: {{ claim.title }}
+    </div>
+    
+    <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: flex-start;">
+        {% if claim.image_icon %}
+        <div style="border: 2px solid var(--accent-gold); padding: 2px; background: black;">
+            <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+                 style="max-width: 120px; display: block;">
+        </div>
+        {% endif %}
+        
+        <div style="flex-grow: 1;">
+            <h3 style="color: var(--text-light); font-family: var(--font-heading);">{{ claim.title }}</h3>
+            <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                {% if claim.console_icon %}
+                    <img src="{{ claim.console_icon }}" width="24">
+                {% endif %}
+                <span style="color: var(--accent-teal); font-family: var(--font-retro);">{{ claim.console }}</span>
             </div>
             
-            <div class="card-body">
-                <div class="text-center mb-4">
-                    {% if claim.image_icon %}
-                        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
-                             class="rounded shadow" style="max-width: 150px;">
-                    {% endif %}
-                    <h3 class="mt-2">{{ claim.title }}</h3>
-                    <div class="d-flex justify-content-center align-items-center gap-2">
-                        {% if claim.console_icon %}
-                            <img src="{{ claim.console_icon }}" width="20">
-                        {% endif %}
-                        <span class="text-muted">{{ claim.console }}</span>
-                    </div>
-                </div>
-
-                <form method="POST">
-                    <div class="row">
-                        <div class="col-md-12 mb-4">
-                        <label class="form-label text-warning">Status do Roteiro (Jr. Developer)</label>
-                        <select class="form-select bg-secondary text-light border-0 p-3" name="status" style="font-size: 1.1em;">
-
-                            <optgroup label="0. Futuro">
-                                <option value="wishlist" {% if claim.status == 'wishlist' %}selected{% endif %}>Lista de Desejos (Pretendo Fazer)</option>
-                            </optgroup>
-                        
-                            <optgroup label="1. Planejamento (JrDev)">
-                                <option value="jr_plan_review" {% if claim.status == 'jr_plan_review' %}selected{% endif %}>Pedir Revisão do Plano</option>
-                                <option value="jr_plan_wait" {% if claim.status == 'jr_plan_wait' %}selected{% endif %}>Aguardando Aprovação do Plano</option>
-                            </optgroup>
-                        
-                            <optgroup label="2. Mão na Massa">
-                                <option value="claim" {% if claim.status == 'claim' %}selected{% endif %}>Claim Ativa (Começando)</option>
-                                <option value="ram" {% if claim.status == 'ram' %}selected{% endif %}>Cavando RAM</option>
-                                <option value="logic" {% if claim.status == 'logic' %}selected{% endif %}>Codando Lógica</option>
-                                <option value="badge" {% if claim.status == 'badge' %}selected{% endif %}>Desenhando Badges</option>
-                            </optgroup>
-                        
-                            <optgroup label="3. Apoio & Equipes">
-                                <option value="writing" {% if claim.status == 'writing' %}selected{% endif %}>Revisão de Escrita</option>
-                                <option value="art_team" {% if claim.status == 'art_team' %}selected{% endif %}>Equipe de Arte</option>
-                                <option value="playtest" {% if claim.status == 'playtest' %}selected{% endif %}>Player-Tester</option>
-                            </optgroup>
-                        
-                            <optgroup label="4. Testes Finais">
-                                <option value="testing" {% if claim.status == 'testing' %}selected{% endif %}>Testes Locais</option>
-                                <option value="pre_release" {% if claim.status == 'pre_release' %}selected{% endif %}>Pré-Lançamento (Pronto p/ Review)</option>
-                            </optgroup>
-                        
-                            <optgroup label="5. Processo de Code Review (JrDev)">
-                                <option value="jr_review_request" {% if claim.status == 'jr_review_request' %}selected{% endif %}>Pedir Revisão do Conjunto</option>
-                                <option value="jr_queue" {% if claim.status == 'jr_queue' %}selected{% endif %}>No Backlog (Aguardando CR)</option>
-                                <option value="jr_cr_active" {% if claim.status == 'jr_cr_active' %}selected{% endif %}>Code Review em Andamento</option>
-                            </optgroup>
-                        
-                            <optgroup label="6. Publicação & Manutenção">
-                                <option value="published" {% if claim.status == 'published' %}selected{% endif %}>Publicado</option>
-                                <option value="tickets" {% if claim.status == 'tickets' %}selected{% endif %}>Atendendo Tickets</option>
-                                <option value="revision" {% if claim.status == 'revision' %}selected{% endif %}>Correção de Bugs (Pós-Ticket)</option>
-                                <option value="jr_republish" {% if claim.status == 'jr_republish' %}selected{% endif %}>Pedir Republicação</option>
-                            </optgroup>
-                        
-                        </select>
-                        </div>
-
-                        <div class="col-md-12 mb-3">
-                            <label class="form-label">Título Personalizado (Opcional)</label>
-                            <input type="text" class="form-control bg-secondary text-light border-0" name="title" value="{{ claim.title }}">
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Progresso: <span id="valBox" class="fw-bold text-info">{{ claim.progress }}</span>%</label>
-                        <input type="range" class="form-range" name="progress" min="0" max="100" value="{{ claim.progress }}" 
-                               oninput="document.getElementById('valBox').innerText = this.value">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Caderno de Notas (Endereços, Ideias, Log)</label>
-                        <textarea class="form-control bg-secondary text-light border-0 font-monospace" name="notes" rows="8" 
-                                  placeholder="0x0012ab: Vida do Boss&#10;0xcafe00: Flag de Conclusão...">{{ claim.notes }}</textarea>
-                    </div>
-
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-success btn-lg">Salvar Atualização</button>
-                        <a href="{{ url_for('index') }}" class="btn btn-outline-light">Voltar ao Painel</a>
-                    </div>
-                </form>
-            </div>
+            <form method="POST" onsubmit="return confirm('Tem certeza que quer apagar este projeto?');" style="margin-top: 15px;">
+                <button type="submit" name="delete" value="true" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Deletar Projeto
+                </button>
+            </form>
         </div>
     </div>
+
+    <hr style="border: 0; border-top: 1px dashed var(--border-color); margin: 20px 0;">
+
+    <form method="POST">
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" style="color: var(--accent-gold);">Status do Roteiro</label>
+            <select class="form-control" name="status" style="font-size: 14px;">
+                <optgroup label="0. Futuro">
+                    <option value="wishlist" {% if claim.status == 'wishlist' %}selected{% endif %}>Lista de Desejos</option>
+                </optgroup>
+                <optgroup label="2. Mão na Massa">
+                    <option value="claim" {% if claim.status == 'claim' %}selected{% endif %}>Claim Ativa</option>
+                    <option value="ram" {% if claim.status == 'ram' %}selected{% endif %}>Cavando RAM</option>
+                    <option value="logic" {% if claim.status == 'logic' %}selected{% endif %}>Codando Lógica</option>
+                </optgroup>
+                <optgroup label="6. Publicação">
+                    <option value="published" {% if claim.status == 'published' %}selected{% endif %}>Publicado</option>
+                </optgroup>
+                </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label">Título Personalizado</label>
+            <input type="text" class="form-control" name="title" value="{{ claim.title }}">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label">
+                Progresso: <span id="valBox" style="color: var(--accent-pink); font-weight: bold;">{{ claim.progress }}</span>%
+            </label>
+            <input type="range" style="width: 100%;" name="progress" min="0" max="100" value="{{ claim.progress }}" 
+                   oninput="document.getElementById('valBox').innerText = this.value">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label">Caderno de Notas</label>
+            <textarea class="form-control" name="notes" rows="8" 
+                      style="font-family: 'Courier New', monospace; background: #1a1125; color: lime;"
+                      placeholder="0x0012ab: Vida do Boss...">{{ claim.notes }}</textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-success" style="flex: 2;">
+                <i class="fas fa-save"></i> Salvar Atualização
+            </button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn" style="flex: 1;">Voltar</a>
+        </div>
+    </form>
 </div>
 {% endblock %}
