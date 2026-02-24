@@ -7,8 +7,10 @@ from datetime import datetime
 import requests
 import os
 
-template_dir = os.path.abspath('../frontend/templates')
-static_dir = os.path.abspath('../frontend/static')
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+template_dir = os.path.abspath(os.path.join(base_dir, '..', 'frontend', 'templates'))
+static_dir = os.path.abspath(os.path.join(base_dir, '..', 'frontend', 'static'))
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
@@ -95,7 +97,7 @@ def logout():
 @login_required
 def admin_dashboard():
     claims = Claim.query.order_by(Claim.updated_at.desc()).all()
-    current_time = datetime.utcnow()  # Adicione esta linha
+    current_time = datetime.utcnow()
     return render_template('index.html', claims=claims, current_time=current_time)
 
 @app.route('/add', methods=['GET', 'POST'])
