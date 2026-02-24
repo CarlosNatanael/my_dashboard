@@ -14,7 +14,7 @@ static_dir = os.path.abspath(os.path.join(base_dir, '..', 'frontend', 'static'))
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
-app.config['SECRET_KEY'] = '9Y\Parrw+5*mgy~ES&a=Ew#I'
+app.config['SECRET_KEY'] = '9YParrw+5*mgy~ES&a=Ew#I'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ra_dashboard.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -144,10 +144,17 @@ def edit_claim(id):
         claim.status = request.form.get('status')
         claim.progress = request.form.get('progress')
         claim.notes = request.form.get('notes')
+        claim.set_plan = request.form.get('set_plan') 
+        
         db.session.commit()
         return redirect(url_for('admin_dashboard'))
 
     return render_template('edit.html', claim=claim)
 
+@app.route('/set_plan/<int:id>')
+def view_set_plan(id):
+    claim = Claim.query.get_or_404(id)
+    return render_template('set_plan.html', claim=claim)
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0" ,debug=True)

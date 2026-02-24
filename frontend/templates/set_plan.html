@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Set Plan - {{ claim.title }}{% endblock %}
+{% block header_title %}Set Plan{% endblock %}
+{% block header_subtitle %}{{ claim.title }}{% endblock %}
+
+{% block content %}
+<div class="block">
+    <div class="block-title">
+        <i class="fas fa-clipboard-list"></i> Achievement Plan: {{ claim.title }}
+    </div>
+    
+    <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.3); padding: 15px; border: 1px dashed var(--border-color);">
+        {% if claim.image_icon %}
+        <img src="https://media.retroachievements.org/Images/{{ claim.image_icon }}.png" 
+             class="game-icon" alt="{{ claim.title }}" style="width: 64px; height: 64px; border: 2px solid var(--accent-gold);">
+        {% endif %}
+        <div>
+            <h3 style="margin: 0; color: var(--accent-gold);">{{ claim.title }}</h3>
+            <div style="color: var(--text-muted); font-size: 12px; margin-bottom: 5px;">
+                {% if claim.console_icon %}
+                <img src="{{ claim.console_icon }}" width="12" style="vertical-align: middle;"> 
+                {% endif %}
+                {{ claim.console }}
+            </div>
+            <span class="status-badge badge-development">{{ claim.status_label }}</span>
+        </div>
+    </div>
+
+    {% if claim.set_plan %}
+    <div class="table-responsive">
+        <table class="ra-plan-table">
+            {% set row_ns = namespace(is_first=true) %}
+            {% for line in claim.set_plan.split('\n') %}
+                {% if line.strip() %}
+                <tr>
+                    {% for cell in line.split('\t') %}
+                        {% if row_ns.is_first %}
+                            <th>{{ cell }}</th>
+                        {% else %}
+                            <td>{{ cell }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% set row_ns.is_first = false %}
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+    {% else %}
+    <p style="text-align: center; color: var(--text-muted); padding: 20px;">
+        Nenhum planejamento disponível para este jogo no momento.
+    </p>
+    {% endif %}
+
+    <div style="margin-top: 25px;">
+        <a href="{{ url_for('index') }}" class="btn">
+            <i class="fas fa-arrow-left"></i> Voltar ao Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

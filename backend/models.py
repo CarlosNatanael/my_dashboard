@@ -21,6 +21,8 @@ class Claim(db.Model):
     progress = db.Column(db.Integer, default=0)
     notes = db.Column(db.Text, nullable=True)
 
+    set_plan = db.Column(db.Text, nullable=True)
+
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

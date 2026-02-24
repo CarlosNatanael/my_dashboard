@@ -14,7 +14,6 @@
     --font-retro: 'Courier New', monospace;
 }
 
-/* Reset estilo anos 2000 */
 * {
     margin: 0;
     padding: 0;
@@ -33,7 +32,6 @@ body {
     min-height: 100vh;
 }
 
-/* Header estilo banner */
 .site-header {
     background: linear-gradient(90deg, var(--bg-secondary), var(--bg-card));
     border-bottom: 8px double var(--accent-gold);
@@ -72,7 +70,6 @@ body {
     letter-spacing: 3px;
 }
 
-/* Layout principal estilo tabela */
 .main-container {
     display: table;
     width: 100%;
@@ -91,9 +88,10 @@ body {
 .content-area {
     display: table-cell;
     vertical-align: top;
+    max-width: 0;
+    width: 100%; 
 }
 
-/* Blocos estilo Web 1.0 */
 .block {
     background: var(--bg-card);
     border: 3px solid var(--border-color);
@@ -133,7 +131,6 @@ body {
     color: var(--accent-gold);
 }
 
-/* Botões estilo retro */
 .btn {
     display: inline-block;
     background: linear-gradient(to bottom, var(--accent-teal), #2a8d9c);
@@ -174,7 +171,6 @@ body {
     background: linear-gradient(to bottom, #4CAF50, #2E7D32);
 }
 
-/* Cards de jogos estilo Webring */
 .game-card {
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid var(--border-color);
@@ -214,7 +210,6 @@ body {
     flex-grow: 1;
 }
 
-/* Status badges estilo etiqueta */
 .status-badge {
     display: inline-block;
     padding: 3px 10px;
@@ -249,7 +244,6 @@ body {
     border-color: #4A148C;
 }
 
-/* Barra de progresso estilo Windows 98 */
 .progress-container {
     background: var(--bg-primary);
     border: 2px inset var(--border-color);
@@ -292,7 +286,6 @@ body {
     100% { transform: translateX(100%); }
 }
 
-/* Formulários estilo anos 2000 */
 .form-control {
     width: 100%;
     padding: 8px;
@@ -318,7 +311,6 @@ select.form-control {
     -moz-appearance: none;
 }
 
-/* Navegação estilo Webrings */
 .nav-links {
     list-style: none;
 }
@@ -350,7 +342,6 @@ select.form-control {
     font-weight: bold;
 }
 
-/* Contador de visitas estilo */
 .visitor-counter {
     background: black;
     color: lime;
@@ -362,7 +353,6 @@ select.form-control {
     font-size: 18px;
 }
 
-/* Blink animation para elementos importantes */
 .blink {
     animation: blink 1s infinite;
 }
@@ -372,7 +362,6 @@ select.form-control {
     50% { opacity: 0.5; }
 }
 
-/* Marca d'água estilo */
 .watermark {
     position: fixed;
     bottom: 10px;
@@ -385,7 +374,6 @@ select.form-control {
     z-index: -1;
 }
 
-/* Efeito scanlines */
 .scanlines {
     position: fixed;
     top: 0;
@@ -403,7 +391,6 @@ select.form-control {
     opacity: 0.3;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .main-container {
         display: block;
@@ -420,50 +407,45 @@ select.form-control {
     }
 }
 
-/* --- Ajuste do Rodapé --- */
 .site-footer {
-    text-align: center; /* Centraliza tudo que está dentro do footer */
-    margin-top: auto;   /* Empurra o rodapé para o final se a página for curta */
+    text-align: center;
+    margin-top: auto; 
 }
 
 .footer-content {
-    text-align: center; /* Garante que o texto dentro do bloco fique no meio */
-    display: block;     /* Garante que o bloco ocupe a largura disponível */
+    text-align: center;
+    display: block;     
     margin-left: auto;  
     margin-right: auto;
 }
 
-/* Opcional: Se quiser que os parágrafos fiquem na mesma linha em telas grandes */
 @media (min-width: 768px) {
     .footer-content p {
         display: inline-block;
         margin: 0 10px;
     }
 }
-/* 1. Ajuste o BODY para servir de plano de fundo da "janela" */
 body {
-    /* Mantém seu background atual, mas vamos garantir que o conteúdo flutue sobre ele */
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza horizontalmente */
-    padding: 20px 0; /* Dá um respiro em cima e embaixo */
+    align-items: center; 
+    padding: 20px 0; 
 }
 
-/* 2. Crie a classe do Wrapper que "encaixota" o site */
+
 .layout-wrapper {
     width: 100%;
-    max-width: 1080px; /* Define a largura máxima estilo anos 2000 */
-    background-color: var(--bg-primary); /* A cor de fundo roxa do painel */
-    border: 4px solid var(--border-color); /* A borda roxa mais clara ao redor de tudo */
+    max-width: 1080px; 
+    background-color: var(--bg-primary); 
+    border: 4px solid var(--border-color); 
     box-shadow: 
-        10px 10px 0px rgba(0, 0, 0, 0.5), /* Sombra dura estilo retro */
-        inset 0 0 20px rgba(0,0,0,0.5); /* Sombra interna para profundidade */
+        10px 10px 0px rgba(0, 0, 0, 0.5),
+        inset 0 0 20px rgba(0,0,0,0.5);
     margin: 0 auto;
     position: relative;
-    z-index: 10; /* Garante que fique acima das scanlines */
+    z-index: 10; 
 }
 
-/* 3. Ajuste o Header para não vazar da caixa */
 .site-header {
     margin: 0; /* Remove margens externas se houver */
     width: 100%;
@@ -538,4 +520,233 @@ body {
 .profile-social a:hover {
     color: var(--accent-gold);
     transform: translateY(-2px);
+}
+
+/* --- Estilos do Set Plan Tabela --- */
+.set-plan-dropdown {
+    margin-top: 10px;
+}
+
+.set-plan-dropdown summary::-webkit-details-marker {
+    display: none; /* Remove a setinha padrão do HTML */
+}
+
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 10px;
+    background: #fff; /* Fundo branco para parecer o Google Sheets */
+    border: 2px solid var(--accent-gold);
+}
+
+.ra-plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Arial', sans-serif; /* Fonte limpa de planilha */
+    font-size: 12px;
+    color: #000;
+}
+
+.ra-plan-table th, .ra-plan-table td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    text-align: left;
+    white-space: nowrap; /* Impede quebra de linha nas colunas curtas */
+}
+
+.ra-plan-table th {
+    background: #eef2f5; /* Cinza clarinho/azul do Sheets */
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #aaa;
+}
+
+/* Deixa a coluna de Descrição quebrar a linha pra não ficar gigante */
+.ra-plan-table td:nth-child(4) {
+    white-space: normal;
+    min-width: 250px;
+    color: #0000ee; /* Azul estilo link do RA Sheets */
+    font-style: italic;
+}
+
+.ra-plan-table tr:hover td {
+    background-color: #f5f5f5;
+}
+
+/* --- Estilos do Set Plan Tabela (Tema Escuro/Retro) --- */
+.table-responsive {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto; /* Cria uma barra de rolagem horizontal se a tabela for muito larga */
+    margin-top: 15px;
+    background: var(--bg-primary); 
+    border: 2px solid var(--accent-gold);
+    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5); /* Sombra interna para dar profundidade */
+}
+
+/* Barra de rolagem estilizada para a tabela */
+.table-responsive::-webkit-scrollbar {
+    height: 10px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--accent-teal);
+    border-radius: 0;
+    border: 1px solid var(--bg-primary);
+}
+
+.ra-plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.ra-plan-table th, .ra-plan-table td {
+    border: 1px solid var(--border-color);
+    padding: 10px 15px;
+    text-align: left;
+    white-space: nowrap; /* Mantém as colunas curtas em uma linha só */
+}
+
+/* Cabeçalho da Tabela */
+.ra-plan-table th {
+    background: var(--bg-secondary);
+    color: var(--accent-gold);
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Linhas Zebradas (Alternando cores para facilitar a leitura) */
+.ra-plan-table tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.02);
+}
+.ra-plan-table tr:nth-child(odd) td {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Efeito ao passar o mouse na linha */
+.ra-plan-table tr:hover td {
+    background: rgba(59, 180, 193, 0.15); /* Cor teal bem suave */
+    border-color: var(--accent-teal);
+}
+
+/* Permite que colunas de Descrição quebrem linha (Evita a tabela de ficar gigante) */
+/* Aplica nas colunas 3 e 4, que geralmente são as de descrição e título no RA */
+.ra-plan-table td:nth-child(3),
+.ra-plan-table td:nth-child(4) {
+    white-space: normal;
+    min-width: 250px;
+    color: var(--text-light);
+}
+
+.ra-plan-table td:last-child {
+    font-weight: bold;
+    color: var(--accent-pink); /* Destaca a pontuação final */
+}
+
+/* --- Responsividade (Mobile) --- */
+@media (max-width: 768px) {
+    /* Ajustes Gerais do Container */
+    .layout-wrapper {
+        width: 100%;
+        border-width: 2px; /* Reduz a borda grossa roxa de fora */
+    }
+    .main-container {
+        display: block;
+        padding: 5px; /* Quase nenhuma margem lateral para aproveitar a tela */
+    }
+    .sidebar, .content-area {
+        display: block;
+        width: 100%;
+        padding: 0;
+        max-width: 100%; 
+    }
+    .sidebar {
+        margin-bottom: 15px; /* Reduz o espaço entre o menu e o conteúdo principal */
+    }
+
+    /* Ajustes do Cabeçalho (Banner) */
+    .site-header {
+        padding: 10px;
+    }
+    .site-title {
+        font-size: 20px; /* Título mais discreto */
+        margin-bottom: 5px;
+    }
+    .site-subtitle {
+        font-size: 10px;
+    }
+
+    /* Redução dos Blocos (Menu, Stats, etc) */
+    .block {
+        padding: 10px;
+        margin-bottom: 15px;
+        border-width: 2px;
+    }
+    .block-title {
+        font-size: 14px;
+        padding: 5px 10px;
+        margin: -10px -10px 10px -10px;
+    }
+
+    /* Compactando os Botões do Menu Lateral */
+    .nav-links a {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    /* Ajuste do Perfil do Dev */
+    .profile-frame {
+        width: 70px; /* Reduz bastante a imagem de perfil */
+        height: 70px;
+        margin-bottom: 10px;
+    }
+    .profile-name {
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+    .profile-role {
+        font-size: 10px;
+        margin-bottom: 10px;
+    }
+    .profile-social a {
+        font-size: 16px;
+    }
+
+    /* Ajustes do Cartão do Jogo (Active Development) */
+    .game-card {
+        padding: 10px;
+    }
+    .game-icon {
+        width: 48px; /* Capa do jogo menor */
+        height: 48px;
+    }
+    .game-title {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+    
+    /* Compactando os botões de Status e Set Plan */
+    .game-status > div:first-child {
+        justify-content: center;
+        flex-wrap: wrap; /* Se não couber, joga o botão para a linha de baixo */
+        gap: 5px;
+    }
+    .status-badge, .btn {
+        font-size: 10px !important;
+        padding: 4px 8px !important;
+    }
+
+    /* Afinando a barra de progresso */
+    .progress-container {
+        height: 12px; 
+        margin-bottom: 2px;
+    }
 }

@@ -39,18 +39,36 @@
         <div style="margin-bottom: 20px;">
             <label class="form-label" style="color: var(--accent-gold);">Status do Roteiro</label>
             <select class="form-control" name="status" style="font-size: 14px;">
-                <optgroup label="0. Futuro">
-                    <option value="wishlist" {% if claim.status == 'wishlist' %}selected{% endif %}>Lista de Desejos</option>
+                <optgroup label="1. Planejamento">
+                    <option value="wishlist" {% if claim.status == 'wishlist' %}selected{% endif %}>Lista de Desejos (Wishlist)</option>
+                    <option value="jr_plan_review" {% if claim.status == 'jr_plan_review' %}selected{% endif %}>Pedir Revisão do Plano</option>
+                    <option value="jr_plan_wait" {% if claim.status == 'jr_plan_wait' %}selected{% endif %}>Aguardando Aprovação do Plano</option>
                 </optgroup>
-                <optgroup label="2. Mão na Massa">
+                <optgroup label="2. Desenvolvimento">
                     <option value="claim" {% if claim.status == 'claim' %}selected{% endif %}>Claim Ativa</option>
                     <option value="ram" {% if claim.status == 'ram' %}selected{% endif %}>Cavando RAM</option>
                     <option value="logic" {% if claim.status == 'logic' %}selected{% endif %}>Codando Lógica</option>
+                    <option value="badge" {% if claim.status == 'badge' %}selected{% endif %}>Criando Badges/Ícones</option>
+                    <option value="writing" {% if claim.status == 'writing' %}selected{% endif %}>Aguardando Revisão de Texto</option>
+                    <option value="art_team" {% if claim.status == 'art_team' %}selected{% endif %}>Aguardando Equipe de Arte</option>
                 </optgroup>
-                <optgroup label="6. Publicação">
-                    <option value="published" {% if claim.status == 'published' %}selected{% endif %}>Publicado</option>
+                <optgroup label="3. Testes Locais e Playtest">
+                    <option value="test" {% if claim.status == 'test' %}selected{% endif %}>Testando (Local)</option>
+                    <option value="playtest" {% if claim.status == 'playtest' %}selected{% endif %}>Enviado para Playtester</option>
+                    <option value="pre_release" {% if claim.status == 'pre_release' %}selected{% endif %}>Testes Finais (Pre-Release)</option>
                 </optgroup>
-                </select>
+                <optgroup label="4. Revisão de Código (Jr Dev)">
+                    <option value="jr_review_request" {% if claim.status == 'jr_review_request' %}selected{% endif %}>Pedir Revisão do Set</option>
+                    <option value="jr_queue" {% if claim.status == 'jr_queue' %}selected{% endif %}>Na Fila de Revisão</option>
+                    <option value="jr_cr_active" {% if claim.status == 'jr_cr_active' %}selected{% endif %}>Em Revisão (Code Reviewer)</option>
+                </optgroup>
+                <optgroup label="5. Lançamento e Pós">
+                    <option value="published" {% if claim.status == 'published' %}selected{% endif %}>Publicado!</option>
+                    <option value="tickets" {% if claim.status == 'tickets' %}selected{% endif %}>Atendendo Tickets</option>
+                    <option value="review" {% if claim.status == 'review' %}selected{% endif %}>Set Review (Correção de Bugs)</option>
+                    <option value="jr_republish" {% if claim.status == 'jr_republish' %}selected{% endif %}>Pedir Republicação (Postfix)</option>
+                </optgroup>
+            </select>
         </div>
 
         <div style="margin-bottom: 20px;">
@@ -71,6 +89,16 @@
             <textarea class="form-control" name="notes" rows="8" 
                       style="font-family: 'Courier New', monospace; background: #1a1125; color: lime;"
                       placeholder="0x0012ab: Vida do Boss...">{{ claim.notes }}</textarea>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label class="form-label" style="color: var(--accent-teal);">
+                <i class="fas fa-table"></i> Set Plan (Cole do Google Sheets)
+            </label>
+            <textarea class="form-control" name="set_plan" rows="10" 
+                      style="font-family: 'Courier New', monospace; background: #000; color: #fff;"
+                      placeholder="Cole aqui as linhas do seu Google Sheets (Order, Feature, Nome, etc...)">{{ claim.set_plan }}</textarea>
+            <small style="color: var(--text-muted); font-size: 11px;">Copie a tabela da planilha do RA e cole diretamente aqui.</small>
         </div>
 
         <div style="display: flex; gap: 10px;">
